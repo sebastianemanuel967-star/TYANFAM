@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#E07A5F">
+<title>TyanGO Home - La IA de tu Familia</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,400&display=swap');
+:root {
+  --bg-main:#FBF9F5; --bg-card:rgba(255,255,255,0.92); --primary:#E07A5F; --primary-dark:#C55F45;
+  --primary-light:rgba(224,122,95,0.12); --sage:#81B29A; --sage-light:rgba(129,178,154,0.15);
+  --amber:#F2CC8F; --amber-dark:#D8A54C; --gold:#D4AF37; --navy:#2B2D42; --text:#1D1E2C;
+  --muted:#6C757D; --border:rgba(43,45,66,0.08); --shadow:0 8px 30px rgba(43,45,66,0.08);
+  --radius:18px; --radius-sm:12px; --radius-full:999px;
+}
+* { box-sizing:border-box; margin:0; padding:0; font-family:'Inter',sans-serif; }
+body { background:var(--bg-main); background-image:radial-gradient(at 10% 10%,rgba(242,204,143,0.25) 0,transparent 50%),radial-gradient(at 90% 90%,rgba(224,122,95,0.12) 0,transparent 50%); background-attachment:fixed; color:var(--text); height:100vh; overflow:hidden; }
+
+/* Onboarding */
+.ob-overlay { position:fixed; inset:0; z-index:1000; background:linear-gradient(135deg,#FBF9F5,#F5F0E8); display:flex; align-items:center; justify-content:center; transition:opacity .5s; }
+.ob-overlay.hidden { opacity:0; pointer-events:none; display:none !important; }
+.ob-card { background:white; border-radius:var(--radius); padding:36px; max-width:500px; width:92%; box-shadow:var(--shadow); text-align:center; animation:fadeUp .5s ease; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.ob-card h2 { font-family:'Playfair Display',serif; font-size:26px; color:var(--navy); margin-bottom:8px; }
+.ob-card p { color:var(--muted); font-size:13px; margin-bottom:20px; line-height:1.6; }
+.ob-dots { display:flex; gap:6px; justify-content:center; margin-bottom:20px; }
+.ob-dot { width:8px; height:8px; border-radius:50%; background:var(--border); transition:.3s; }
+.ob-dot.active { background:var(--primary); width:22px; border-radius:4px; }
+.ob-card input, .ob-card textarea, .ob-card select { width:100%; padding:12px 14px; border:1px solid var(--border); border-radius:var(--radius-sm); font-size:14px; margin-bottom:12px; outline:none; }
+.ob-card input:focus, .ob-card textarea:focus { border-color:var(--primary); box-shadow:0 0 0 3px var(--primary-light); }
+.btn-p { background:linear-gradient(135deg,var(--primary),var(--primary-dark)); color:white; border:none; padding:12px 28px; border-radius:var(--radius-full); font-size:13px; font-weight:700; cursor:pointer; width:100%; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 6px 18px rgba(224,122,95,0.28); transition:.2s; }
+.btn-p:hover { transform:translateY(-2px); }
+.btn-s { background:white; color:var(--navy); border:1px solid var(--border); padding:10px 20px; border-radius:var(--radius-full); font-size:12px; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; transition:.2s; }
+.btn-s:hover { border-color:var(--primary); color:var(--primary); }
+.member-chip { display:inline-flex; align-items:center; gap:6px; background:var(--primary-light); color:var(--primary); padding:6px 12px; border-radius:var(--radius-full); font-size:12px; font-weight:600; margin:3px; }
+.member-chip .rm { cursor:pointer; opacity:.6; }
+.warm-q { background:linear-gradient(135deg,rgba(242,204,143,0.15),rgba(224,122,95,0.08)); border-radius:var(--radius-sm); padding:14px; margin-bottom:14px; text-align:left; border-left:3px solid var(--amber-dark); }
+.warm-q label { font-size:11px; font-weight:700; color:var(--amber-dark); text-transform:uppercase; letter-spacing:.05em; }
+.warm-q p { font-size:13px; color:var(--navy); font-weight:600; margin:3px 0 8px; }
+.invite-box { background:var(--sage-light); border:1px dashed var(--sage); border-radius:var(--radius-sm); padding:14px; text-align:center; margin-top:14px; }
+.invite-box code { background:white; padding:8px 12px; border-radius:8px; font-size:11px; font-family:monospace; display:inline-block; margin:6px 0; word-break:break-all; }
+
+/* App */
+#app { display:flex; height:100vh; overflow:hidden; }
+.sidebar { width:260px; background:rgba(255,253,249,0.92); backdrop-filter:blur(20px); border-right:1px solid var(--border); display:flex; flex-direction:column; padding:22px 16px; z-index:100; flex-shrink:0; justify-content:space-between; transition:.3s; }
+.brand { display:flex; align-items:center; gap:10px; margin-bottom:22px; padding:0 4px; }
+.brand-logo { width:40px; height:40px; background:linear-gradient(135deg,var(--primary),var(--amber)); border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; color:white; font-size:18px; box-shadow:0 4px 12px rgba(224,122,95,0.22); }
+.brand h1 { font-size:17px; color:var(--navy); }
+.brand span { font-size:10px; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.07em; }
+.nav-menu { display:flex; flex-direction:column; gap:3px; flex:1; overflow-y:auto; }
+.nav-item { display:flex; align-items:center; gap:10px; padding:9px 12px; border-radius:var(--radius-sm); color:var(--muted); text-decoration:none; font-size:12.5px; font-weight:500; cursor:pointer; border:1px solid transparent; transition:.25s; }
+.nav-item:hover { background:rgba(255,255,255,0.7); color:var(--navy); transform:translateX(3px); }
+.nav-item.active { background:white; color:var(--primary); font-weight:600; border-color:var(--primary-light); box-shadow:var(--shadow); }
+.nav-item i { font-size:15px; width:18px; text-align:center; }
+.nav-badge { margin-left:auto; background:var(--primary); color:white; font-size:9px; font-weight:700; padding:2px 7px; border-radius:var(--radius-full); }
+.family-foot { background:white; border:1px solid var(--border); border-radius:var(--radius-sm); padding:10px; display:flex; align-items:center; gap:8px; }
+.av-group { display:flex; margin-left:-5px; }
+.av-mini { width:28px; height:28px; border-radius:50%; border:2px solid white; background:var(--primary-light); display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:var(--primary); }
+.family-foot h4 { font-size:11px; font-weight:600; }
+.family-foot p { font-size:9px; color:var(--muted); }
+
+.main { flex:1; display:flex; flex-direction:column; overflow:hidden; }
+.topbar { height:64px; padding:0 24px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border); background:rgba(255,253,249,0.6); backdrop-filter:blur(12px); z-index:10; }
+.topbar h2 { font-size:19px; color:var(--navy); }
+.topbar .sub { font-size:11px; color:var(--muted); }
+.tactions { display:flex; align-items:center; gap:8px; }
+.role-sw { display:flex; background:white; padding:3px; border-radius:var(--radius-full); border:1px solid var(--border); box-shadow:var(--shadow); }
+.role-btn { border:none; background:transparent; padding:5px 12px; border-radius:var(--radius-full); font-size:10.5px; font-weight:600; color:var(--muted); cursor:pointer; transition:.2s; }
+.role-btn.active { background:var(--navy); color:white; }
+
+.view-scroll { flex:1; overflow-y:auto; padding:24px; }
+.view { display:none; animation:fadeIn .35s ease; }
+.view.active { display:block; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+.card { background:var(--bg-card); backdrop-filter:blur(12px); border:1px solid var(--border); border-radius:var(--radius); padding:20px; box-shadow:var(--shadow); transition:.25s; }
+.card:hover { box-shadow:0 12px 40px rgba(43,45,66,0.1); }
+.ch { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+.ct { font-size:14px; font-weight:700; display:flex; align-items:center; gap:8px; }
+.ct i { color:var(--primary); }
+.g2 { display:grid; grid-template-columns:repeat(2,1fr); gap:18px; }
+.g3 { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+.g4 { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+
+@media(max-width:1024px){
+  .g2,.g3,.g4 { grid-template-columns:1fr; }
+  .sidebar { position:fixed; left:0; bottom:0; width:100%; height:auto; flex-direction:row; padding:6px 10px; z-index:200; border-right:none; border-top:1px solid var(--border); }
+  .sidebar .nav-menu { flex-direction:row; overflow-x:auto; gap:3px; }
+  .sidebar .nav-text, .sidebar .brand, .sidebar .family-foot { display:none; }
+  .nav-item { padding:6px 10px; flex-direction:column; gap:1px; font-size:9px; }
+  .nav-item i { font-size:16px; }
+  .main { padding-bottom:65px; }
+  .topbar { padding:0 14px; }
+  .topbar h2 { font-size:15px; }
+  .tactions { gap:6px; }
+  .role-sw { display:none; }
+}
+
+.story-hero { background:linear-gradient(135deg,rgba(255,255,255,0.95),rgba(244,241,222,0.85)); border-radius:var(--radius); padding:26px; margin-bottom:22px; border:1px solid rgba(242,204,143,0.4); box-shadow:var(--shadow); }
+.story-badge { display:inline-flex; align-items:center; gap:6px; background:var(--primary-light); color:var(--primary); padding:4px 12px; border-radius:var(--radius-full); font-size:11px; font-weight:700; margin-bottom:10px; }
+.story-hero h2 { font-size:24px; line-height:1.2; margin-bottom:10px; color:var(--navy); }
+.story-hero .quote { font-family:'Playfair Display',serif; font-size:13px; color:var(--muted); font-style:italic; line-height:1.6; margin-bottom:16px; }
+.story-nodes { display:flex; gap:12px; flex-wrap:wrap; }
+.story-node { flex:1; min-width:200px; background:white; padding:12px; border-radius:var(--radius-sm); border:1px solid var(--border); box-shadow:var(--shadow); display:flex; align-items:flex-start; gap:10px; }
+.story-node-icon { width:34px; height:34px; border-radius:50%; background:var(--primary-light); color:var(--primary); display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; }
+.story-node h5 { font-size:11px; margin-bottom:2px; }
+.story-node p { font-size:10.5px; color:var(--muted); line-height:1.4; }
+
+.mcard { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:18px; text-align:center; box-shadow:var(--shadow); transition:.25s; cursor:pointer; }
+.mcard:hover { transform:translateY(-4px); box-shadow:0 16px 40px rgba(43,45,66,0.12); }
+.mcard-av { width:56px; height:56px; border-radius:50%; background:linear-gradient(135deg,var(--primary),var(--amber)); color:white; font-size:20px; font-weight:700; display:flex; align-items:center; justify-content:center; margin:0 auto 10px; box-shadow:0 4px 12px rgba(224,122,95,0.22); }
+.mcard h3 { font-size:14px; margin-bottom:3px; }
+.mcard-role { display:inline-block; background:var(--sage-light); color:var(--sage); font-size:10px; font-weight:700; padding:2px 8px; border-radius:var(--radius-full); margin-bottom:10px; }
+.mcard-traits { text-align:left; display:flex; flex-direction:column; gap:5px; }
+.mcard-traits .t { font-size:11px; padding:6px 8px; background:rgba(255,255,255,0.6); border-radius:8px; border:1px solid var(--border); }
+.mcard-traits .t strong { color:var(--primary); }
+
+.chat-wrap { display:flex; gap:16px; height:calc(100vh - 170px); }
+.chat-side { width:240px; background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:14px; flex-shrink:0; }
+.chat-side h4 { font-size:11px; color:var(--muted); margin-bottom:8px; }
+.chat-th { padding:10px; border-radius:var(--radius-sm); cursor:pointer; margin-bottom:4px; transition:.2s; }
+.chat-th:hover { background:rgba(0,0,0,0.03); }
+.chat-th.active { background:var(--primary-light); border-left:3px solid var(--primary); }
+.chat-th h4 { font-size:11px; margin-bottom:1px; }
+.chat-th p { font-size:10px; color:var(--muted); }
+.chat-main { flex:1; display:flex; flex-direction:column; background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; }
+.chat-msgs { flex:1; overflow-y:auto; padding:18px; display:flex; flex-direction:column; gap:10px; }
+.msg { max-width:80%; padding:10px 14px; border-radius:16px; font-size:12.5px; line-height:1.5; animation:popIn .3s ease; }
+@keyframes popIn { from{opacity:0;transform:scale(.95)} to{opacity:1;transform:scale(1)} }
+.msg.ai { background:white; border:1px solid var(--border); align-self:flex-start; border-bottom-left-radius:3px; }
+.msg.user { background:linear-gradient(135deg,var(--primary),var(--primary-dark)); color:white; align-self:flex-end; border-bottom-right-radius:3px; }
+.chat-bar { display:flex; gap:8px; padding:12px 16px; border-top:1px solid var(--border); background:rgba(255,255,255,0.8); }
+.chat-bar input { flex:1; padding:10px 16px; border:1px solid var(--border); border-radius:var(--radius-full); outline:none; font-size:12px; }
+.chat-bar input:focus { border-color:var(--primary); box-shadow:0 0 0 3px var(--primary-light); }
+
+.leg-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:18px; }
+.leg-card { background:white; border-radius:var(--radius); padding:20px; border:1px solid rgba(212,175,55,0.3); box-shadow:0 8px 25px rgba(212,175,55,0.1); display:flex; flex-direction:column; justify-content:space-between; }
+.leg-card.locked { opacity:.65; filter:grayscale(.3); }
+.leg-auth { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+.leg-auth h4 { font-size:13px; }
+.leg-auth p { font-size:10px; color:var(--muted); }
+.audio-pl { background:var(--bg-main); padding:8px; border-radius:var(--radius-sm); display:flex; align-items:center; gap:8px; margin-top:10px; }
+.play-btn { width:28px; height:28px; border-radius:50%; background:var(--primary); color:white; border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+
+.tl-wrap { position:relative; max-width:760px; margin:0 auto; padding:18px 0; }
+.tl-wrap::before { content:''; position:absolute; top:0; bottom:0; left:50%; width:3px; background:linear-gradient(180deg,var(--primary),var(--amber),var(--sage)); transform:translateX(-50%); border-radius:4px; }
+.tl-item { position:relative; width:50%; padding:0 24px 32px 24px; }
+.tl-item.left { left:0; text-align:right; }
+.tl-item.right { left:50%; text-align:left; }
+.tl-dot { position:absolute; top:10px; width:16px; height:16px; border-radius:50%; background:white; border:4px solid var(--primary); box-shadow:0 0 0 4px rgba(224,122,95,0.15); z-index:2; }
+.tl-item.left .tl-dot { right:-8px; }
+.tl-item.right .tl-dot { left:-8px; }
+.tl-content { background:white; padding:16px; border-radius:var(--radius); border:1px solid var(--border); box-shadow:var(--shadow); }
+.tl-date { display:inline-block; font-size:10px; font-weight:700; color:var(--primary); background:var(--primary-light); padding:2px 8px; border-radius:var(--radius-full); margin-bottom:4px; }
+.tl-content h4 { font-size:13px; margin-bottom:3px; }
+.tl-content p { font-size:10.5px; color:var(--muted); }
+
+.gamify-h { background:linear-gradient(135deg,var(--navy),#3D405B); color:white; border-radius:var(--radius); padding:22px; margin-bottom:22px; display:flex; align-items:center; justify-content:space-between; }
+.gamify-h h2 { color:white; font-size:18px; }
+.gamify-h .lvl { font-size:28px; font-weight:800; color:var(--amber); }
+.xp-bar { background:rgba(255,255,255,0.15); height:8px; border-radius:var(--radius-full); margin-top:6px; overflow:hidden; }
+.xp-fill { height:100%; background:linear-gradient(90deg,var(--amber),var(--gold)); border-radius:var(--radius-full); transition:width .5s ease; }
+.badge-c { background:white; border-radius:var(--radius-sm); padding:14px; text-align:center; border:1px solid var(--border); box-shadow:var(--shadow); transition:.25s; }
+.badge-c:hover { transform:translateY(-4px); }
+.badge-c.locked { opacity:.4; filter:grayscale(1); }
+.badge-icon { width:48px; height:48px; border-radius:50%; background:var(--primary-light); color:var(--primary); display:flex; align-items:center; justify-content:center; font-size:20px; margin:0 auto 8px; }
+.mission-c { background:white; border-radius:var(--radius-sm); padding:14px; border:1px solid var(--border); display:flex; align-items:center; gap:12px; margin-bottom:8px; }
+.mission-c.done { opacity:.55; }
+.mcheck { width:24px; height:24px; border-radius:50%; border:2px solid var(--border); display:flex; align-items:center; justify-content:center; cursor:pointer; transition:.2s; flex-shrink:0; }
+.mcheck:hover { border-color:var(--sage); }
+.mcheck.ok { background:var(--sage); border-color:var(--sage); color:white; }
+
+.mood-grid { display:flex; gap:10px; justify-content:center; margin:18px 0; flex-wrap:wrap; }
+.mood-btn { background:white; border:2px solid var(--border); border-radius:var(--radius); padding:14px 20px; display:flex; flex-direction:column; align-items:center; gap:4px; cursor:pointer; transition:.2s; min-width:90px; }
+.mood-btn:hover { border-color:var(--primary); transform:translateY(-3px); box-shadow:var(--shadow); }
+.mood-btn .em { font-size:28px; }
+.mood-btn span { font-size:11px; font-weight:600; color:var(--navy); }
+.mood-hist { display:flex; gap:6px; flex-wrap:wrap; margin-top:14px; }
+.mood-pill { background:var(--sage-light); color:var(--sage); padding:5px 10px; border-radius:var(--radius-full); font-size:10px; font-weight:600; }
+
+.modal-o { position:fixed; inset:0; background:rgba(0,0,0,0.4); backdrop-filter:blur(4px); z-index:900; display:none; align-items:center; justify-content:center; }
+.modal-o.active { display:flex; }
+.modal-b { background:white; border-radius:var(--radius); padding:24px; max-width:460px; width:92%; box-shadow:0 18px 50px rgba(43,45,66,0.15); animation:fadeUp .3s ease; max-height:90vh; overflow-y:auto; }
+.toast { position:fixed; top:20px; right:20px; background:white; border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 18px; box-shadow:var(--shadow); z-index:1000; display:none; align-items:center; gap:8px; font-size:12px; font-weight:600; }
+.toast.show { display:flex; animation:popIn .3s ease; }
+.empty { text-align:center; padding:50px 20px; }
+.empty .ei { font-size:44px; margin-bottom:14px; opacity:.35; }
+.empty h3 { font-size:16px; color:var(--navy); margin-bottom:6px; }
+.empty p { font-size:12px; color:var(--muted); max-width:360px; margin:0 auto 18px; line-height:1.6; }
+.progress-w { background:var(--border); height:7px; border-radius:var(--radius-full); overflow:hidden; margin-top:5px; }
+.progress-f { height:100%; background:linear-gradient(90deg,var(--primary),var(--amber)); border-radius:var(--radius-full); transition:width .5s ease; }
+.setting-r { display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid var(--border); }
+.setting-r:last-child { border-bottom:none; }
+.setting-r h4 { font-size:12px; margin-bottom:1px; }
+.setting-r p { font-size:10px; color:var(--muted); }
+.toggle { width:40px; height:22px; background:var(--border); border-radius:var(--radius-full); position:relative; cursor:pointer; transition:.2s; }
+.toggle.on { background:var(--sage); }
+.toggle::after { content:''; position:absolute; top:2px; left:2px; width:18px; height:18px; background:white; border-radius:50%; transition:.2s; box-shadow:0 2px 4px rgba(0,0,0,0.1); }
+.toggle.on::after { left:20px; }
+.proactive { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:white; border-left:4px solid var(--primary); border-radius:var(--radius-sm); padding:12px 16px; box-shadow:0 12px 40px rgba(43,45,66,0.15); z-index:500; display:none; align-items:center; gap:12px; max-width:460px; width:92%; animation:slideUp .4s ease; }
+@keyframes slideUp { from{transform:translateX(-50%) translateY(40px); opacity:0} to{transform:translateX(-50%) translateY(0); opacity:1} }
+</style>
+<base target="_blank">
+</head>
+<body>
+
+<!-- ========== ONBOARDING ========== -->
+<div class="ob-overlay" id="ob">
+  <div class="ob-card" id="ob-card">
+    <div id="ob-1">
+      <div style="font-size:44px; margin-bottom:14px;">🏠</div>
+      <h2>Bienvenido a TyanGO Home</h2>
+      <p>La IA que cuida lo más importante: tu familia.<br>En 3 minutos crearemos juntos el hogar digital donde vivirán tus recuerdos.</p>
+      <div class="ob-dots"><div class="ob-dot active"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div></div>
+      <button class="btn-p" onclick="loadDemoData()" style="margin-bottom:10px;">✨ Entrar Directo (Ver App Demo)</button>
+      <button class="btn-s" onclick="obNext(2)">Crear Mi Familia Paso a Paso <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+    <div id="ob-2" style="display:none">
+      <h2>¿Cómo se llama tu familia?</h2>
+      <p>Este será el nombre de tu espacio privado. Solo ustedes tendrán acceso.</p>
+      <div class="ob-dots"><div class="ob-dot"></div><div class="ob-dot active"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div></div>
+      <input type="text" id="ob-fam-name" placeholder="Ej: Familia Mendoza" onkeypress="if(event.key==='Enter')obNext(3)">
+      <button class="btn-p" onclick="obNext(3)">Continuar <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+    <div id="ob-3" style="display:none">
+      <h2>¿Quiénes forman tu familia?</h2>
+      <p>Agrega los nombres de quienes vivirán este espacio contigo.</p>
+      <div class="ob-dots"><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot active"></div><div class="ob-dot"></div><div class="ob-dot"></div></div>
+      <div style="display:flex; gap:6px; margin-bottom:10px;">
+        <input type="text" id="ob-mem-name" placeholder="Nombre" style="flex:1; margin-bottom:0;">
+        <select id="ob-mem-role" style="padding:12px; border:1px solid var(--border); border-radius:var(--radius-sm); font-size:14px;">
+          <option>Mamá</option><option>Papá</option><option>Hija</option><option>Hijo</option><option>Abuela</option><option>Abuelo</option><option>Otro</option>
+        </select>
+        <button class="btn-p" style="width:auto; padding:12px 16px;" onclick="obAddMem()">+</button>
+      </div>
+      <div id="ob-mem-list" style="margin-bottom:14px; min-height:36px;"></div>
+      <button class="btn-p" id="ob-btn3" onclick="obNext(4)" disabled>Continuar <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+    <div id="ob-4" style="display:none">
+      <h2>Empecemos con un recuerdo</h2>
+      <p>FamIA aprende de tus historias. Cuéntanos algo especial.</p>
+      <div class="ob-dots"><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot active"></div><div class="ob-dot"></div></div>
+      <div class="warm-q">
+        <label>Pregunta cálida 1 de 2</label>
+        <p>¿Cuál fue el último viaje o salida que hicieron juntos?</p>
+        <input type="text" id="ob-mem1" placeholder="Ej: Fuimos a la playa en enero...">
+      </div>
+      <div class="warm-q">
+        <label>Pregunta cálida 2 de 2</label>
+        <p>¿Qué le gusta cocinar o preparar a alguien de tu familia?</p>
+        <input type="text" id="ob-mem2" placeholder="Ej: A mamá le encanta hacer paella...">
+      </div>
+      <button class="btn-p" onclick="obNext(5)">Continuar <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+    <div id="ob-5" style="display:none">
+      <div style="font-size:44px; margin-bottom:14px;">✨</div>
+      <h2 id="ob-final-title">Tu familia está lista</h2>
+      <p>FamIA ya conoce los primeros capítulos de su historia.<br>Ahora invita a tu familia para que construyan juntos.</p>
+      <div class="ob-dots"><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot active"></div></div>
+      <div class="invite-box">
+        <div style="font-size:13px; font-weight:700; margin-bottom:4px;">🔗 Link de invitación</div>
+        <code id="ob-link">https://tyango.app/join/...</code><br>
+        <button class="btn-s" style="margin-top:6px;" onclick="shareInvite()">
+          <i class="fa-brands fa-whatsapp"></i> Compartir por WhatsApp
+        </button>
+      </div>
+      <button class="btn-p" style="margin-top:14px;" onclick="finishOB()">Entrar a TyanGO Home <i class="fa-solid fa-heart"></i></button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== APP ========== -->
+<div id="app" style="display:none;">
+  <aside class="sidebar">
+    <div>
+      <div class="brand">
+        <div class="brand-logo"><i class="fa-solid fa-house-heart"></i></div>
+        <div><h1>TyanGO Home</h1><span>Memoria Viva</span></div>
+      </div>
+      <nav class="nav-menu">
+        <a class="nav-item active" data-view="home" onclick="switchView('home')"><i class="fa-solid fa-book-sparkles"></i><span class="nav-text">Inicio</span></a>
+        <a class="nav-item" data-view="brain" onclick="switchView('brain')"><i class="fa-solid fa-brain"></i><span class="nav-text">Family Brain</span></a>
+        <a class="nav-item" data-view="chat" onclick="switchView('chat')"><i class="fa-solid fa-comments"></i><span class="nav-text">FamIA</span><span class="nav-badge">IA</span></a>
+        <a class="nav-item" data-view="legacy" onclick="switchView('legacy')"><i class="fa-solid fa-vault"></i><span class="nav-text">Legado</span><span class="nav-badge" style="background:var(--gold);">Cápsulas</span></a>
+        <a class="nav-item" data-view="timeline" onclick="switchView('timeline')"><i class="fa-solid fa-timeline"></i><span class="nav-text">Historia</span></a>
+        <a class="nav-item" data-view="goals" onclick="switchView('goals')"><i class="fa-solid fa-trophy"></i><span class="nav-text">Misiones</span></a>
+        <a class="nav-item" data-view="radar" onclick="switchView('radar')"><i class="fa-solid fa-heart-pulse"></i><span class="nav-text">Radar</span></a>
+        <a class="nav-item" data-view="settings" onclick="switchView('settings')"><i class="fa-solid fa-gear"></i><span class="nav-text">Ajustes</span></a>
+      </nav>
+    </div>
+    <div class="family-foot">
+      <div class="av-group" id="side-avs"></div>
+      <div><h4 id="side-fname">Familia</h4><p><i class="fa-solid fa-shield-check" style="color:var(--sage);"></i> Privado y local</p></div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div><h2 id="page-title">La Historia de tu Familia</h2><div class="sub" id="page-sub">Tecnología para cuidar lo que más importa</div></div>
+      <div class="tactions">
+        <div class="role-sw">
+          <button class="role-btn active" onclick="switchRole('parents',this)"><i class="fa-solid fa-user-tie"></i> Padres</button>
+          <button class="role-btn" onclick="switchRole('kids',this)"><i class="fa-solid fa-child-reaching"></i> Niños</button>
+          <button class="role-btn" onclick="switchRole('grandparents',this)"><i class="fa-solid fa-heart-pulse"></i> Abuelos</button>
+        </div>
+        <button class="btn-s" onclick="openModal('modal-cel')"><i class="fa-solid fa-cake-candles"></i> Celebrations</button>
+        <button class="btn-p" onclick="switchView('chat');setTimeout(()=>document.getElementById('chat-in').focus(),100)"><i class="fa-solid fa-wand-magic-sparkles"></i> FamIA</button>
+      </div>
+    </header>
+
+    <div class="view-scroll">
+
+      <!-- HOME -->
+      <section id="view-home" class="view active">
+        <div class="story-hero">
+          <span class="story-badge"><i class="fa-solid fa-feather-pointed"></i> Historia Viva de Hoy</span>
+          <h2 id="story-greet">"Buenos días. Hoy es un momento hermoso para conectar con tu familia."</h2>
+          <p class="quote" id="story-quote">"Tu historia familiar empieza hoy. Cada momento que guardes aquí será un tesoro para las generaciones futuras."</p>
+          <div class="story-nodes" id="story-nodes">
+            <div class="story-node"><div class="story-node-icon"><i class="fa-solid fa-heart-circle-check"></i></div><div><h5>Conexión Emocional</h5><p>Agrega tu primer recuerdo familiar para que FamIA empiece a conoceros.</p></div></div>
+            <div class="story-node"><div class="story-node-icon" style="background:var(--sage-light);color:var(--sage);"><i class="fa-solid fa-calendar-star"></i></div><div><h5>Próxima Celebración</h5><p>Configura fechas importantes para recibir sugerencias de Celebrations AI.</p></div></div>
+          </div>
+        </div>
+        <div class="g3">
+          <div class="card">
+            <div class="ch"><div class="ct"><i class="fa-solid fa-sparkles"></i> IA Proactiva</div></div>
+            <p style="font-size:12px; color:var(--muted); line-height:1.5; margin-bottom:12px;" id="pro-text">FamIA está aprendiendo de tu familia. Cuanto más compartas, mejores serán sus sugerencias.</p>
+            <button class="btn-p" style="width:100%; justify-content:center;" onclick="triggerProactive()"><i class="fa-solid fa-check"></i> Aceptar Sugerencia</button>
+          </div>
+          <div class="card">
+            <div class="ch"><div class="ct"><i class="fa-solid fa-vault"></i> Mensaje del Legado</div></div>
+            <div style="background:var(--primary-light); padding:12px; border-radius:var(--radius-sm); font-size:11px; color:var(--navy);">
+              <strong><i class="fa-solid fa-quote-left"></i> Tu primer consejo:</strong><br><em>"Los mejores recuerdos no son los que se planean, sino los que se guardan."</em>
+            </div>
+          </div>
+          <div class="card">
+            <div class="ch"><div class="ct"><i class="fa-solid fa-trophy"></i> Nivel</div><span style="font-weight:700; color:var(--gold);" id="home-lvl">Nivel 1</span></div>
+            <h4 style="font-size:13px; margin-bottom:3px;" id="home-lname">"Familia Recién Llegada"</h4>
+            <p style="font-size:11px; color:var(--muted); margin-bottom:10px;">Completa misiones para subir de nivel.</p>
+            <div class="progress-w"><div class="progress-f" id="home-xp" style="width:5%"></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BRAIN -->
+      <section id="view-brain" class="view">
+        <div class="card" style="margin-bottom:18px;">
+          <div class="ch"><div class="ct"><i class="fa-solid fa-brain"></i> Family Brain 2.0</div><span style="font-size:10px; background:var(--sage-light); color:var(--sage); padding:3px 10px; border-radius:var(--radius-full); font-weight:700;"><i class="fa-solid fa-shield-check"></i> Privacidad Local</span></div>
+          <p style="font-size:12px; color:var(--muted);">Cada miembro tiene un perfil único. FamIA usa esta información para sugerir actividades, regalos y momentos de conexión.</p>
+        </div>
+        <div class="g4" id="brain-grid"></div>
+      </section>
+
+      <!-- CHAT -->
+      <section id="view-chat" class="view">
+        <div class="chat-wrap">
+          <div class="chat-side">
+            <h4>Conversaciones</h4>
+            <div class="chat-th active" onclick="switchThread('memories')"><h4><i class="fa-solid fa-comments"></i> Historia & Recuerdos</h4><p>Pregunta sobre momentos</p></div>
+            <div class="chat-th" onclick="switchThread('coach')"><h4><i class="fa-solid fa-heart-pulse"></i> Coach Relaciones</h4><p>Fortalecer lazos</p></div>
+            <div class="chat-th" onclick="switchThread('legacy')"><h4><i class="fa-solid fa-vault"></i> Legado</h4><p>Recetas y tradiciones</p></div>
+          </div>
+          <div class="chat-main">
+            <div class="chat-msgs" id="chat-msgs">
+              <div class="msg ai"><strong>FamIA:</strong> ¡Hola! Soy la memoria viva de tu familia. Cuéntame sobre un recuerdo especial, pregúntame por ideas de regalos, o conversemos sobre lo que hace única a tu familia. ¿Por dónde empezamos? ✨</div>
+            </div>
+            <div class="chat-bar">
+              <input type="text" id="chat-in" placeholder="Pregunta sobre recuerdos, regalos, tradiciones..." onkeypress="if(event.key==='Enter')sendChat()">
+              <button class="btn-p" onclick="sendChat()"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LEGACY -->
+      <section id="view-legacy" class="view">
+        <div class="card" style="margin-bottom:18px; display:flex; justify-content:space-between; align-items:center;">
+          <div><h3>Baúl del Legado</h3><p style="font-size:11px; color:var(--muted);">Mensajes y recuerdos para las futuras generaciones.</p></div>
+          <button class="btn-p" onclick="openModal('modal-leg')"><i class="fa-solid fa-plus"></i> Crear Cápsula</button>
+        </div>
+        <div class="leg-grid" id="leg-grid"></div>
+      </section>
+
+      <!-- TIMELINE -->
+      <section id="view-timeline" class="view">
+        <div class="card" style="margin-bottom:18px; display:flex; justify-content:space-between; align-items:center;">
+          <div><h3>Línea del Tiempo</h3><p style="font-size:11px; color:var(--muted);">Los momentos que definen a tu familia.</p></div>
+          <button class="btn-p" onclick="openModal('modal-tl')"><i class="fa-solid fa-plus"></i> Agregar Hito</button>
+        </div>
+        <div class="tl-wrap" id="tl-wrap"></div>
+      </section>
+
+      <!-- GOALS -->
+      <section id="view-goals" class="view">
+        <div class="gamify-h">
+          <div>
+            <h2><i class="fa-solid fa-trophy-star" style="color:var(--amber);"></i> Aventura Familiar</h2>
+            <p style="font-size:12px; opacity:.9;">Completa misiones para subir de nivel y desbloquear medallas.</p>
+            <div class="xp-bar" style="max-width:280px;"><div class="xp-fill" id="g-xp" style="width:5%"></div></div>
+          </div>
+          <div style="text-align:right;"><div class="lvl" id="g-lvl">1</div><div style="font-size:11px; opacity:.8;" id="g-lname">Familia Recién Llegada</div></div>
+        </div>
+        <h3 style="font-size:15px; margin-bottom:12px;">Misiones Activas</h3>
+        <div id="miss-list"></div>
+        <h3 style="font-size:15px; margin:22px 0 12px;">Insignias</h3>
+        <div class="g4" id="badge-grid"></div>
+      </section>
+
+      <!-- RADAR -->
+      <section id="view-radar" class="view">
+        <div class="card" style="max-width:560px; margin:0 auto;">
+          <div class="ch"><div class="ct"><i class="fa-solid fa-heart-pulse"></i> Check-in Emocional</div></div>
+          <p style="font-size:12px; color:var(--muted); margin-bottom:18px;">¿Cómo te sientes hoy? Registrar tus emociones ayuda a FamIA a cuidar el clima de casa.</p>
+          <div class="mood-grid">
+            <button class="mood-btn" onclick="regMood('Alegre','😊')"><span class="em">😊</span><span>Alegre</span></button>
+            <button class="mood-btn" onclick="regMood('Tranquilo','😌')"><span class="em">😌</span><span>Tranquilo</span></button>
+            <button class="mood-btn" onclick="regMood('Emocionado','🤩')"><span class="em">🤩</span><span>Emocionado</span></button>
+            <button class="mood-btn" onclick="regMood('Cansado','😮💨')"><span class="em">😮💨</span><span>Cansado</span></button>
+            <button class="mood-btn" onclick="regMood('Nostálgico','🥹')"><span class="em">🥹</span><span>Nostálgico</span></button>
+            <button class="mood-btn" onclick="regMood('Estresado','😰')"><span class="em">😰</span><span>Estresado</span></button>
+          </div>
+          <div style="margin-top:18px; border-top:1px solid var(--border); padding-top:14px;">
+            <h4 style="font-size:12px; margin-bottom:8px;">Historial emocional reciente</h4>
+            <div class="mood-hist" id="mood-hist"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section id="view-settings" class="view">
+        <div class="g2">
+          <div class="card">
+            <div class="ch"><div class="ct"><i class="fa-solid fa-crown" style="color:var(--gold);"></i> Plan TyanGO</div></div>
+            <div style="background:linear-gradient(135deg,var(--navy),#3D405B); color:white; border-radius:var(--radius-sm); padding:14px; margin-bottom:12px;">
+              <div style="font-size:18px; font-weight:800;">Plan Home</div>
+              <div style="font-size:11px; opacity:.8;">$7.99 / mes • Primer mes gratis</div>
+            </div>
+            <ul style="font-size:12px; color:var(--muted); line-height:2; list-style:none;">
+              <li><i class="fa-solid fa-check" style="color:var(--sage);"></i> Family Brain ilimitado</li>
+              <li><i class="fa-solid fa-check" style="color:var(--sage);"></i> Cápsulas del tiempo</li>
+              <li><i class="fa-solid fa-check" style="color:var(--sage);"></i> IA Proactiva</li>
+              <li><i class="fa-solid fa-check" style="color:var(--sage);"></i> Hasta 6 miembros</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="ch"><div class="ct"><i class="fa-solid fa-lock"></i> Privacidad</div></div>
+            <div class="setting-r"><div><h4>Modo Offline</h4><p>Tus datos nunca salen de este dispositivo</p></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+            <div class="setting-r"><div><h4>IA Proactiva</h4><p>Sugerencias automáticas</p></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+            <div class="setting-r"><div><h4>Exportar datos</h4><p>Descarga tu legado familiar</p></div><button class="btn-s" style="width:auto; padding:6px 12px; font-size:10px;" onclick="exportData()">Exportar JSON</button></div>
+            <div class="setting-r"><div><h4>Borrar todo</h4><p>Elimina permanentemente</p></div><button class="btn-s" style="width:auto; padding:6px 12px; font-size:10px; color:var(--primary); border-color:var(--primary);" onclick="resetAll()">Borrar</button></div>
+          </div>
+        </div>
+        <div class="invite-box" style="max-width:560px; margin:18px auto 0;">
+          <div style="font-size:13px; font-weight:700; margin-bottom:4px;">🔗 Invitar a la familia</div>
+          <p style="font-size:11px; color:var(--muted); margin-bottom:6px;">Comparte este link para que se unan.</p>
+          <code id="set-link">https://tyango.app/join/...</code><br>
+          <button class="btn-s" style="margin-top:6px;" onclick="shareInvite()"><i class="fa-brands fa-whatsapp"></i> Compartir por WhatsApp</button>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<!-- MODALS -->
+<div class="modal-o" id="modal-cel"><div class="modal-b">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+    <h3><i class="fa-solid fa-cake-candles" style="color:var(--primary);"></i> Celebrations AI</h3>
+    <button onclick="closeModal('modal-cel')" style="background:none; border:none; font-size:16px; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <p style="font-size:12px; color:var(--muted); margin-bottom:12px;">Configura fechas importantes para recibir sugerencias.</p>
+  <div style="display:flex; gap:6px; margin-bottom:10px;">
+    <input type="text" id="cel-name" placeholder="Evento" style="flex:1; padding:8px; border:1px solid var(--border); border-radius:var(--radius-sm); font-size:12px;">
+    <input type="date" id="cel-date" style="padding:8px; border:1px solid var(--border); border-radius:var(--radius-sm); font-size:12px;">
+    <button class="btn-p" style="width:auto; padding:8px 14px;" onclick="addCel()">+</button>
+  </div>
+  <div id="cel-list" style="max-height:180px; overflow-y:auto;"></div>
+</div></div>
+
+<div class="modal-o" id="modal-leg"><div class="modal-b">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+    <h3><i class="fa-solid fa-box-archive" style="color:var(--gold);"></i> Nueva Cápsula</h3>
+    <button onclick="closeModal('modal-leg')" style="background:none; border:none; font-size:16px; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <input type="text" id="leg-title" placeholder="Título" style="width:100%; padding:10px; border:1px solid var(--border); border-radius:var(--radius-sm); margin-bottom:8px; font-size:12px;">
+  <textarea id="leg-content" placeholder="Escribe tu mensaje..." style="width:100%; height:80px; padding:10px; border:1px solid var(--border); border-radius:var(--radius-sm); margin-bottom:8px; font-size:12px; resize:vertical;"></textarea>
+  <div style="display:flex; gap:6px; margin-bottom:12px;">
+    <select id="leg-auth" style="flex:1; padding:8px; border:1px solid var(--border); border-radius:var(--radius-sm); font-size:12px;"></select>
+    <input type="date" id="leg-unlock" style="flex:1; padding:8px; border:1px solid var(--border); border-radius:var(--radius-sm); font-size:12px;">
+  </div>
+  <button class="btn-p" style="width:100%; justify-content:center;" onclick="createLeg()"><i class="fa-solid fa-box-archive"></i> Guardar Cápsula</button>
+</div></div>
+
+<div class="modal-o" id="modal-tl"><div class="modal-b">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+    <h3><i class="fa-solid fa-timeline" style="color:var(--primary);"></i> Nuevo Hito</h3>
+    <button onclick="closeModal('modal-tl')" style="background:none; border:none; font-size:16px; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <input type="text" id="tl-title" placeholder="¿Qué pasó?" style="width:100%; padding:10px; border:1px solid var(--border); border-radius:var(--radius-sm); margin-bottom:8px; font-size:12px;">
+  <textarea id="tl-desc" placeholder="Cuéntanos la historia..." style="width:100%; height:70px; padding:10px; border:1px solid var(--border); border-radius:var(--radius-sm); margin-bottom:8px; font-size:12px; resize:vertical;"></textarea>
+  <input type="date" id="tl-date" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:var(--radius-sm); margin-bottom:12px; font-size:12px;">
+  <button class="btn-p" style="width:100%; justify-content:center;" onclick="createTL()"><i class="fa-solid fa-plus"></i> Agregar a la Historia</button>
+</div></div>
+
+<!-- PROACTIVE TOAST -->
+<div class="proactive" id="proactive"><div style="font-size:20px; color:var(--primary);"><i class="fa-solid fa-sparkles"></i></div>
+  <div style="flex:1; font-size:11.5px; color:var(--navy);" id="proactive-text">...</div>
+  <button class="btn-p" style="padding:5px 10px; font-size:10px;" onclick="acceptProactive()">Aceptar</button>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><i class="fa-solid fa-circle-check" style="color:var(--sage);"></i><span id="toast-txt">Notificación</span></div>
+
+<script>
+
+// ===================== STATE =====================
+let S = {
+  familyName:'', members:[], memories:[], celebrations:[], legacy:[], timeline:[], moods:[],
+  chatHistory:[], xp:0, level:1, currentThread:'memories', role:'parents',
+  missions:[
+    {id:1,text:'Completa el onboarding familiar',done:false,xp:50},
+    {id:2,text:'Agrega tu primer recuerdo en FamIA',done:false,xp:30},
+    {id:3,text:'Crea una cápsula del tiempo',done:false,xp:40},
+    {id:4,text:'Registra tu estado emocional 3 días',done:false,xp:25},
+    {id:5,text:'Agrega un hito a la línea del tiempo',done:false,xp:35},
+    {id:6,text:'Configura una fecha de celebración',done:false,xp:20},
+  ],
+  badges:[
+    {id:'welcome',name:'Bienvenida',desc:'Uniste a tu familia',icon:'fa-house-heart',unlocked:true},
+    {id:'memory',name:'Primer Recuerdo',desc:'Guardaste un momento',icon:'fa-book-sparkles',unlocked:false},
+    {id:'capsule',name:'Viajero del Tiempo',desc:'Creaste una cápsula',icon:'fa-box-archive',unlocked:false},
+    {id:'heart',name:'Corazón Abierto',desc:'3 check-ins emocionales',icon:'fa-heart-pulse',unlocked:false},
+    {id:'chat',name:'Conversador',desc:'10 mensajes con FamIA',icon:'fa-comments',unlocked:false},
+    {id:'timeline',name:'Historiador',desc:'Agregaste un hito',icon:'fa-timeline',unlocked:false},
+  ]
+};
+const LEVELS=[{level:1,name:'Familia Recién Llegada',xpNeeded:0},{level:2,name:'Familia Curiosa',xpNeeded:100},{level:3,name:'Familia Conectada',xpNeeded:250},{level:4,name:'Familia Exploradora',xpNeeded:450},{level:5,name:'Familia Legendaria',xpNeeded:700}];
+
+function save(){
+  try {
+    localStorage.setItem('tyango_v3', JSON.stringify(S));
+  } catch(e) {
+    console.warn('LocalStorage not accessible:', e);
+  }
+}
+
+function load(){
+  try {
+    const r = localStorage.getItem('tyango_v3');
+    if(r){ S = JSON.parse(r); return true; }
+  } catch(e) {
+    console.warn('LocalStorage not accessible:', e);
+  }
+  return false;
+}
+
+// ===================== ONBOARDING & DEMO =====================
+let obMems=[];
+function obNext(n){
+  try {
+    if(n===3){
+      const name = document.getElementById('ob-fam-name')?.value.trim();
+      if(!name){ showT('Ingresa el nombre de tu familia'); return; }
+      S.familyName = name;
+    }
+    if(n===4 && obMems.length===0){
+      showT('Agrega al menos un miembro');
+      return;
+    }
+    if(n===5){
+      const m1 = document.getElementById('ob-mem1')?.value.trim() || '';
+      const m2 = document.getElementById('ob-mem2')?.value.trim() || '';
+      if(m1) S.memories.push({text:m1, date:new Date().toISOString(), type:'viaje'});
+      if(m2) S.memories.push({text:m2, date:new Date().toISOString(), type:'cocina'});
+      S.members = obMems.map(m=>({name:m.name, role:m.role, avatar:m.name[0].toUpperCase(), traits:[{label:'Lenguaje del Amor',value:'Por descubrir'},{label:'Sueño',value:'Por descubrir'},{label:'Frase Célebre',value:'Por descubrir'}]}));
+      completeMission(1);
+      unlockBadge('welcome');
+      const finTitle = document.getElementById('ob-final-title');
+      if(finTitle) finTitle.textContent = '¡'+S.familyName+' está lista!';
+      const linkEl = document.getElementById('ob-link');
+      if(linkEl) linkEl.textContent = 'https://tyango.app/join/'+Math.random().toString(36).substr(2,8);
+    }
+    for(let i=1; i<=5; i++){
+      const el = document.getElementById('ob-'+i);
+      if(el) el.style.display = (i===n) ? 'block' : 'none';
+    }
+    const dots = document.querySelectorAll('.ob-dot');
+    dots.forEach((d,i)=>d.classList.toggle('active', i===n-1));
+  } catch(err) {
+    console.error('Error in obNext:', err);
+    loadDemoData();
+  }
+}
+
+function loadDemoData(){
+  S = {
+    familyName: 'Familia Mendoza',
+    members: [
+      { name: 'Elena', role: 'Mamá', avatar: 'E', traits: [{label:'Lenguaje del Amor', value:'Tiempo de Calidad'}, {label:'Sueño', value:'Conocer los Alpes'}, {label:'Frase Célebre', value:'Todo se arregla con té'}] },
+      { name: 'Carlos', role: 'Papá', avatar: 'C', traits: [{label:'Lenguaje del Amor', value:'Actos de Servicio'}, {label:'Sueño', value:'Escribir un libro'}, {label:'Frase Célebre', value:'La paciencia construye hogares'}] },
+      { name: 'Sofía', role: 'Hija', avatar: 'S', traits: [{label:'Lenguaje del Amor', value:'Palabras de Afirmación'}, {label:'Sueño', value:'Tener su propia banda'}, {label:'Frase Célebre', value:'La música conecta almas'}] },
+      { name: 'Mateo', role: 'Hijo', avatar: 'M', traits: [{label:'Lenguaje del Amor', value:'Contacto Físico & Juego'}, {label:'Sueño', value:'Ser astronauta'}, {label:'Frase Célebre', value:'Los Legos son infinitos'}] }
+    ],
+    memories: [
+      { text: 'Fuimos a la playa en Enero 2026. Mateo aprendió a nadar y Sofía tomó fotos del atardecer.', date: new Date().toISOString(), type: 'viaje' },
+      { text: 'A mamá Elena le encanta cocinar su famosa paella los domingos.', date: new Date().toISOString(), type: 'cocina' }
+    ],
+    celebrations: [
+      { name: 'Cumpleaños del Abuelo Antonio', date: '2026-08-14' },
+      { name: 'Aniversario de Bodas Elena & Carlos', date: '2026-10-20' }
+    ],
+    legacy: [
+      { title: 'Receta Secreta & Audio de la Abuela Rosa', content: 'El secreto de mi salsa de tomate no son los condimentos, sino dejar cocinar los ajos a fuego lento con amor...', author: 'Abuela Rosa', unlock: '2020-01-01', date: new Date().toISOString() },
+      { title: 'Carta de Papá para los 18 años de Mateo', content: 'Querido Mateo, cuando leas esto habrás cumplido 18 años. Recuerda siempre mantener la humildad y el amor por la familia...', author: 'Carlos', unlock: '2035-02-03', date: new Date().toISOString() }
+    ],
+    timeline: [
+      { title: 'Vacaciones en la Playa', desc: 'Mateo aprendió a nadar sin flotadores y Sofía tomó fotos maravillosas.', date: '2026-01-15' },
+      { title: 'Adopción de nuestra perrita Luna', desc: 'Luna llegó con solo 3 meses y trajo una alegría inmensa a todos.', date: '2024-09-10' },
+      { title: 'Mudanza a la Casa Nueva', desc: 'Construimos el jardín juntos y plantamos el limonero.', date: '2021-05-20' },
+      { title: 'Nacimiento de Mateo', desc: 'Nació Mateo a las 4:15 AM. Toda la familia reunida.', date: '2017-02-03' }
+    ],
+    moods: [
+      { text: 'Tranquilo', emoji: '😌', date: new Date().toISOString() },
+      { text: 'Alegre', emoji: '😊', date: new Date().toISOString() }
+    ],
+    chatHistory: [],
+    xp: 260,
+    level: 3,
+    currentThread: 'memories',
+    role: 'parents',
+    missions: [
+      { id: 1, text: 'Completa el onboarding familiar', done: true, xp: 50 },
+      { id: 2, text: 'Agrega tu primer recuerdo en FamIA', done: true, xp: 30 },
+      { id: 3, text: 'Crea una cápsula del tiempo', done: true, xp: 40 },
+      { id: 4, text: 'Registra tu estado emocional 3 días', done: false, xp: 25 },
+      { id: 5, text: 'Agrega un hito a la línea del tiempo', done: true, xp: 35 },
+      { id: 6, text: 'Configura una fecha de celebración', done: true, xp: 20 }
+    ],
+    badges: [
+      { id: 'welcome', name: 'Bienvenida', desc: 'Uniste a tu familia', icon: 'fa-house-heart', unlocked: true },
+      { id: 'memory', name: 'Primer Recuerdo', desc: 'Guardaste un momento', icon: 'fa-book-sparkles', unlocked: true },
+      { id: 'capsule', name: 'Viajero del Tiempo', desc: 'Creaste una cápsula', icon: 'fa-box-archive', unlocked: true },
+      { id: 'heart', name: 'Corazón Abierto', desc: '3 check-ins emocionales', icon: 'fa-heart-pulse', unlocked: false },
+      { id: 'chat', name: 'Conversador', desc: '10 mensajes con FamIA', icon: 'fa-comments', unlocked: false },
+      { id: 'timeline', name: 'Historiador', desc: 'Agregaste un hito', icon: 'fa-timeline', unlocked: true }
+    ]
+  };
+  save();
+  finishOB();
+}
+
+function obAddMem(){
+  const nInput = document.getElementById('ob-mem-name');
+  const rInput = document.getElementById('ob-mem-role');
+  const n = nInput ? nInput.value.trim() : '';
+  const r = rInput ? rInput.value : 'Otro';
+  if(!n) return;
+  obMems.push({name:n, role:r});
+  if(nInput) nInput.value = '';
+  renderObMems();
+}
+
+function renderObMems(){
+  const el = document.getElementById('ob-mem-list');
+  if(!el) return;
+  el.innerHTML = obMems.map((m,i)=>'<span class="member-chip">'+esc(m.name)+' ('+esc(m.role)+') <span class="rm" onclick="obMems.splice('+i+',1);renderObMems();">×</span></span>').join('');
+  const btn3 = document.getElementById('ob-btn3');
+  if(btn3) btn3.disabled = (obMems.length === 0);
+}
+
+function finishOB(){
+  const ob = document.getElementById('ob');
+  if(ob) {
+    ob.classList.add('hidden');
+    ob.style.display = 'none';
+  }
+  const app = document.getElementById('app');
+  if(app) {
+    app.style.display = 'flex';
+  }
+  initApp();
+}
+
+function shareInvite(){
+  const l = document.getElementById('ob-link')?.textContent || document.getElementById('set-link')?.textContent || 'https://tyango.app/join/demo';
+  window.open('https://wa.me/?text=%F0%9F%8F%A0%20%C3%9Anete%20a%20nuestro%20espacio%20familiar%20en%20TyanGO%20Home%3A%20'+encodeURIComponent(l));
+}
+
+// ===================== APP INIT =====================
+const TITLES={
+  home:{t:'La Historia de tu Familia',s:'Tecnología para cuidar lo que más importa'},
+  brain:{t:'Family Brain 2.0',s:'Grafo afirmativo de lenguajes del amor y sueños'},
+  chat:{t:'FamIA',s:'Asistente con memoria biográfica de tu familia'},
+  legacy:{t:'Baúl del Legado',s:'Cápsulas del tiempo para futuras generaciones'},
+  timeline:{t:'Línea del Tiempo',s:'Cronología de vida, momentos y aprendizajes'},
+  goals:{t:'Misiones Familiares',s:'Aventuras gamificadas y medallas'},
+  radar:{t:'Radar Emocional',s:'Check-in de bienestar y tendencias del hogar'},
+  settings:{t:'Ajustes & Privacidad',s:'Control total de tus datos familiares'}
+};
+
+function switchView(v){
+  document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
+  const nav=document.querySelector('.nav-item[data-view="'+v+'"]'); if(nav)nav.classList.add('active');
+  document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
+  const sec=document.getElementById('view-'+v); if(sec)sec.classList.add('active');
+  if(TITLES[v]){
+    document.getElementById('page-title').textContent=TITLES[v].t;
+    document.getElementById('page-sub').textContent=TITLES[v].s;
+  }
+  if(v==='brain')renderBrain();
+  if(v==='legacy')renderLegacy();
+  if(v==='timeline')renderTL();
+  if(v==='goals')renderGoals();
+  if(v==='radar')renderMoods();
+  if(v==='settings')renderSettings();
+}
+
+function switchRole(r,btn){
+  document.querySelectorAll('.role-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  S.role=r;
+  document.body.className='';
+  if(r==='kids')document.body.classList.add('role-kids');
+  if(r==='grandparents')document.body.classList.add('role-grandparents');
+  showT('Modo '+r+' activado');
+  save();
+}
+
+function initApp(){
+  const sFname = document.getElementById('side-fname');
+  if(sFname) sFname.textContent = S.familyName || 'Familia Mendoza';
+  const setLink = document.getElementById('set-link');
+  if(setLink) setLink.textContent = 'https://tyango.app/join/'+Math.random().toString(36).substr(2,8);
+  
+  renderSideAvs();
+  renderBrain();
+  renderGoals();
+  renderMoods();
+  renderHome();
+  renderCelList();
+  startProactive();
+}
+
+function renderSideAvs(){
+  const container = document.getElementById('side-avs');
+  if(!container) return;
+  if(!S.members || S.members.length===0){
+    container.innerHTML = '<div class="av-mini">F</div>';
+    return;
+  }
+  container.innerHTML = S.members.slice(0,4).map(m=>'<div class="av-mini">'+esc(m.avatar||'M')+'</div>').join('');
+}
+
+// ===================== HOME =====================
+function renderHome(){
+  const lvl=LEVELS.find(l=>l.level===S.level)||LEVELS[0];
+  const next=LEVELS.find(l=>l.level===S.level+1);
+  const pct=next?Math.min(100,((S.xp-lvl.xpNeeded)/(next.xpNeeded-lvl.xpNeeded))*100):100;
+  
+  const hLvl = document.getElementById('home-lvl');
+  if(hLvl) hLvl.textContent='Nivel '+S.level;
+  const hLname = document.getElementById('home-lname');
+  if(hLname) hLname.textContent='"'+lvl.name+'"';
+  const hXp = document.getElementById('home-xp');
+  if(hXp) hXp.style.width=pct+'%';
+
+  const h=new Date().getHours();
+  let greet='Buenos días'; if(h>=12&&h<18)greet='Buenas tardes'; if(h>=18)greet='Buenas noches';
+  const first=S.members[0]?.name||'';
+  const sGreet = document.getElementById('story-greet');
+  if(sGreet) sGreet.textContent='"'+greet+(first?', '+first:'')+'. Hoy es un buen día para conectar con tu familia."';
+
+  if(S.memories && S.memories.length>0){
+    const mem=S.memories[S.memories.length-1];
+    const proText = document.getElementById('pro-text');
+    if(proText) proText.textContent='FamIA recuerda: "'+mem.text.substring(0,80)+'..." ¿Quieres que sugiera algo relacionado?';
+  }
+
+  const nodes=document.getElementById('story-nodes');
+  if(nodes && S.members && S.members.length>0){
+    let html = '<div class="story-node"><div class="story-node-icon"><i class="fa-solid fa-heart-circle-check"></i></div><div><h5>Tu Familia</h5><p>'+esc(S.familyName)+' tiene '+S.members.length+' miembros registrados.</p></div></div>';
+    if(S.celebrations && S.celebrations.length>0){
+      const cel=S.celebrations[0];
+      html += '<div class="story-node"><div class="story-node-icon" style="background:var(--sage-light);color:var(--sage);"><i class="fa-solid fa-calendar-star"></i></div><div><h5>Próxima Celebración</h5><p>'+esc(cel.name)+' el '+new Date(cel.date).toLocaleDateString('es-ES',{day:'numeric',month:'long'})+'.</p></div></div>';
+    } else {
+      html += '<div class="story-node"><div class="story-node-icon" style="background:var(--sage-light);color:var(--sage);"><i class="fa-solid fa-calendar-star"></i></div><div><h5>Configura Celebraciones</h5><p>Agrega cumpleaños para recibir sugerencias de Celebrations AI.</p></div></div>';
+    }
+    nodes.innerHTML = html;
+  }
+}
+
+// ===================== BRAIN =====================
+function renderBrain(){
+  const grid=document.getElementById('brain-grid');
+  if(!grid) return;
+  if(!S.members || S.members.length===0){
+    grid.innerHTML='<div class="empty" style="grid-column:1/-1;"><div class="ei">🧠</div><h3>Aún no hay miembros</h3><p>Ingresa datos para ver los perfiles familiares.</p></div>';
+    return;
+  }
+  grid.innerHTML=S.members.map((m,i)=>'<div class="mcard" onclick="editMember('+i+')">'+
+    '<div class="mcard-av">'+esc(m.avatar||'M')+'</div><h3>'+esc(m.name)+'</h3><span class="mcard-role">'+esc(m.role)+'</span>'+
+    '<div class="mcard-traits">'+(m.traits||[]).map(t=>'<div class="t"><strong>'+esc(t.label)+':</strong> '+esc(t.value)+'</div>').join('')+'</div>'+
+    '</div>').join('');
+}
+
+function editMember(idx){
+  const m=S.members[idx];
+  if(!m) return;
+  const love=prompt('Lenguaje del Amor de '+m.name+':', m.traits[0]?.value || 'Tiempo de Calidad');
+  if(love!==null && m.traits[0]) m.traits[0].value=love||'Por descubrir';
+  const dream=prompt('¿Cuál es el sueño de '+m.name+'?:', m.traits[1]?.value || 'Viajar');
+  if(dream!==null && m.traits[1]) m.traits[1].value=dream||'Por descubrir';
+  const phrase=prompt('Frase célebre de '+m.name+':', m.traits[2]?.value || 'El amor une a la familia');
+  if(phrase!==null && m.traits[2]) m.traits[2].value=phrase||'Por descubrir';
+  save();
+  renderBrain();
+  showT('Perfil de '+m.name+' actualizado');
+}
+
+// ===================== CHAT =====================
+let chatCount=0;
+function switchThread(t){
+  S.currentThread=t;
+  document.querySelectorAll('.chat-th').forEach(el=>el.classList.remove('active'));
+  if(event && event.currentTarget) event.currentTarget.classList.add('active');
+}
+
+function sendChat(){
+  const input=document.getElementById('chat-in');
+  const container=document.getElementById('chat-msgs');
+  if(!input || !container) return;
+  const text=input.value.trim();
+  if(!text)return;
+  
+  const userMsg=document.createElement('div');
+  userMsg.className='msg user';
+  userMsg.innerHTML='<strong>Tú:</strong> '+esc(text);
+  container.appendChild(userMsg);
+  input.value='';
+  container.scrollTop=container.scrollHeight;
+  
+  chatCount++;
+  if(chatCount>=10) unlockBadge('chat');
+  
+  setTimeout(()=>{
+    const aiMsg=document.createElement('div');
+    aiMsg.className='msg ai';
+    aiMsg.innerHTML='<strong>FamIA:</strong> '+getAIResponse(text);
+    container.appendChild(aiMsg);
+    container.scrollTop=container.scrollHeight;
+    if(!S.chatHistory) S.chatHistory = [];
+    S.chatHistory.push({role:'user',text:text,date:new Date().toISOString()});
+    S.chatHistory.push({role:'ai',text:getAIResponse(text),date:new Date().toISOString()});
+    save();
+  },800);
+}
+
+function getAIResponse(q){
+  const lq=q.toLowerCase();
+  if(lq.includes('regalo')||lq.includes('cumpleaños')||lq.includes('abuelo')||lq.includes('mamá')||lq.includes('papá')){
+    const mem=S.memories.find(m=>m.type==='cocina');
+    if(mem) return 'Según la memoria familiar de '+S.familyName+', a tu familia le encanta: <em>"'+esc(mem.text)+'"</em>. Un regalo relacionado sería inolvidable.';
+    return 'Estoy aprendiendo los gustos de tu familia. Cuéntame más sobre esa persona especial para darte ideas personalizadas.';
+  }
+  if(lq.includes('viaje')||lq.includes('playa')||lq.includes('vacaciones')){
+    const mem=S.memories.find(m=>m.type==='viaje');
+    if(mem) return 'Recuerdo perfectamente que '+esc(mem.text)+' ¡Fue un momento hermoso! ¿Quieres sugerencias para el próximo destino?';
+    return 'Cuéntame sobre un viaje o paseo importante para ustedes y lo guardaré en la memoria viva.';
+  }
+  return 'He guardado "'+esc(q)+'" en la Memoria Viva de '+S.familyName+'. Con esto podré conectarlo con futuros recuerdos y darles mejores recomendaciones.';
+}
+
+// ===================== LEGACY =====================
+function renderLegacy(){
+  const grid=document.getElementById('leg-grid');
+  if(!grid) return;
+  if(!S.legacy || S.legacy.length===0){
+    grid.innerHTML='<div class="empty" style="grid-column:1/-1;"><div class="ei">📦</div><h3>Baúl del Legado Vacío</h3><p>Crea la primera cápsula del tiempo para las futuras generaciones.</p><button class="btn-p" style="width:auto; margin:0 auto;" onclick="openModal(\'modal-leg\')"><i class="fa-solid fa-plus"></i> Crear Cápsula</button></div>';
+    return;
+  }
+  const now=new Date().toISOString().split('T')[0];
+  grid.innerHTML=S.legacy.map((l,i)=>{
+    const locked=l.unlock && l.unlock>now;
+    return '<div class="leg-card '+(locked?'locked':'')+'">'+
+      '<div><div class="leg-auth"><div class="av-mini" style="background:linear-gradient(135deg,var(--primary),var(--amber));color:white;">'+(l.author?esc(l.author[0].toUpperCase()):'T')+'</div><div><h4>'+esc(l.title)+'</h4><p>'+esc(l.author||'Anónimo')+' • '+(locked?'🔒 Se abre el '+esc(l.unlock):'✨ Disponible')+'</p></div></div>'+
+      '<p style="font-size:12px; color:var(--muted); line-height:1.5;">'+esc(l.content.substring(0,120))+(l.content.length>120?'...':'')+'</p></div>'+
+      (locked?'<button class="btn-s" style="width:100%; justify-content:center; margin-top:10px;" disabled><i class="fa-solid fa-lock"></i> Bloqueada</button>':'<button class="btn-p" style="width:100%; justify-content:center; margin-top:10px;" onclick="showT(\'📖 Leyendo cápsula del tiempo...\')"><i class="fa-solid fa-book-open"></i> Leer Cápsula</button>')+
+      '</div>';
+  }).join('');
+}
+
+function createLeg(){
+  const title=document.getElementById('leg-title')?.value.trim();
+  const content=document.getElementById('leg-content')?.value.trim();
+  const author=document.getElementById('leg-auth')?.value || 'Familia';
+  const unlock=document.getElementById('leg-unlock')?.value || '';
+  if(!title||!content){showT('Completa título y contenido'); return;}
+  if(!S.legacy) S.legacy = [];
+  S.legacy.push({title,content,author,unlock,date:new Date().toISOString()});
+  save();
+  renderLegacy();
+  closeModal('modal-leg');
+  if(document.getElementById('leg-title')) document.getElementById('leg-title').value='';
+  if(document.getElementById('leg-content')) document.getElementById('leg-content').value='';
+  completeMission(3);
+  unlockBadge('capsule');
+  showT('Cápsula del tiempo guardada ✨');
+}
+
+// ===================== TIMELINE =====================
+function renderTL(){
+  const wrap=document.getElementById('tl-wrap');
+  if(!wrap) return;
+  if(!S.timeline || S.timeline.length===0){
+    wrap.innerHTML='<div class="empty"><div class="ei">📜</div><h3>Tu Historia Familiar</h3><p>Agrega el primer hito biográfico a la línea del tiempo.</p><button class="btn-p" style="width:auto; margin:0 auto;" onclick="openModal(\'modal-tl\')"><i class="fa-solid fa-plus"></i> Agregar Hito</button></div>';
+    return;
+  }
+  const sorted=[...S.timeline].sort((a,b)=>new Date(b.date)-new Date(a.date));
+  wrap.innerHTML=sorted.map((t,i)=>'<div class="tl-item '+(i%2===0?'right':'left')+'">'+
+    '<div class="tl-dot"></div><div class="tl-content">'+
+    '<span class="tl-date">'+new Date(t.date).toLocaleDateString('es-ES',{year:'numeric',month:'short'}).toUpperCase()+'</span>'+
+    '<h4>'+esc(t.title)+'</h4><p>'+esc(t.desc)+'</p></div></div>').join('');
+}
+
+function createTL(){
+  const title=document.getElementById('tl-title')?.value.trim();
+  const desc=document.getElementById('tl-desc')?.value.trim();
+  const date=document.getElementById('tl-date')?.value;
+  if(!title||!date){showT('Completa título y fecha'); return;}
+  if(!S.timeline) S.timeline = [];
+  S.timeline.push({title,desc,date});
+  save();
+  renderTL();
+  closeModal('modal-tl');
+  if(document.getElementById('tl-title')) document.getElementById('tl-title').value='';
+  if(document.getElementById('tl-desc')) document.getElementById('tl-desc').value='';
+  completeMission(5);
+  unlockBadge('timeline');
+  showT('Hito agregado a la línea del tiempo 📜');
+}
+
+// ===================== GOALS =====================
+function renderGoals(){
+  const lvl=LEVELS.find(l=>l.level===S.level)||LEVELS[0];
+  const next=LEVELS.find(l=>l.level===S.level+1);
+  const pct=next?Math.min(100,((S.xp-lvl.xpNeeded)/(next.xpNeeded-lvl.xpNeeded))*100):100;
+  
+  const gLvl = document.getElementById('g-lvl');
+  if(gLvl) gLvl.textContent=S.level;
+  const gLname = document.getElementById('g-lname');
+  if(gLname) gLname.textContent=lvl.name;
+  const gXp = document.getElementById('g-xp');
+  if(gXp) gXp.style.width=pct+'%';
+
+  const mList = document.getElementById('miss-list');
+  if(mList && S.missions) {
+    mList.innerHTML=S.missions.map(m=>'<div class="mission-c '+(m.done?'done':'')+'">'+
+      '<div class="mcheck '+(m.done?'ok':'')+'" onclick="toggleMission('+m.id+')">'+(m.done?'<i class="fa-solid fa-check"></i>':'')+'</div>'+
+      '<div style="flex:1;"><div style="font-size:12px; font-weight:600;">'+esc(m.text)+'</div><div style="font-size:10px; color:var(--muted);">+'+m.xp+' XP</div></div></div>').join('');
+  }
+
+  const bGrid = document.getElementById('badge-grid');
+  if(bGrid && S.badges) {
+    bGrid.innerHTML=S.badges.map(b=>'<div class="badge-c '+(b.unlocked?'':'locked')+'">'+
+      '<div class="badge-icon"><i class="fa-solid '+b.icon+'"></i></div>'+
+      '<h4 style="font-size:12px;">'+esc(b.name)+'</h4><p style="font-size:10px; color:var(--muted);">'+esc(b.desc)+'</p></div>').join('');
+  }
+}
+
+function toggleMission(id){
+  const m=S.missions.find(x=>x.id===id);
+  if(!m||m.done)return;
+  m.done=true;
+  addXP(m.xp);
+  save();
+  renderGoals();
+  renderHome();
+}
+
+function completeMission(id){
+  const m=S.missions.find(x=>x.id===id);
+  if(m&&!m.done){
+    m.done=true;
+    addXP(m.xp);
+    save();
+    renderGoals();
+    renderHome();
+  }
+}
+
+function addXP(amount){
+  S.xp+=amount;
+  const next=LEVELS.find(l=>l.level===S.level+1);
+  if(next&&S.xp>=next.xpNeeded){
+    S.level++;
+    showT('¡Felicidades! Subieron al Nivel '+S.level+' 🎉');
+  }
+  save();
+}
+
+function unlockBadge(id){
+  const b=S.badges.find(x=>x.id===id);
+  if(b&&!b.unlocked){
+    b.unlocked=true;
+    save();
+    renderGoals();
+  }
+}
+
+// ===================== RADAR =====================
+function renderMoods(){
+  const h=document.getElementById('mood-hist');
+  if(!h) return;
+  if(!S.moods || S.moods.length===0){
+    h.innerHTML='<span style="font-size:11px; color:var(--muted);">Aún no hay registros emocionales.</span>';
+    return;
+  }
+  h.innerHTML=S.moods.slice().reverse().slice(0,10).map(m=>'<span class="mood-pill">'+esc(m.emoji)+' '+esc(m.text)+'</span>').join('');
+}
+
+function regMood(text,emoji){
+  if(!S.moods) S.moods = [];
+  S.moods.push({text,emoji,date:new Date().toISOString()});
+  save();
+  renderMoods();
+  showT('Estado registrado: '+emoji+' '+text);
+  if(S.moods.length>=3) completeMission(4);
+  if(S.moods.length>=3) unlockBadge('heart');
+}
+
+// ===================== CELEBRATIONS =====================
+function renderCelList(){
+  const el=document.getElementById('cel-list');
+  if(!el) return;
+  if(!S.celebrations || S.celebrations.length===0){
+    el.innerHTML='<p style="font-size:11px; color:var(--muted); text-align:center; padding:10px;">No hay celebraciones configuradas.</p>';
+    return;
+  }
+  el.innerHTML=S.celebrations.map((c,i)=>'<div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--border);">'+
+    '<div><div style="font-size:12px; font-weight:600;">'+esc(c.name)+'</div><div style="font-size:10px; color:var(--muted);">'+new Date(c.date).toLocaleDateString('es-ES')+'</div></div>'+
+    '<button style="background:none; border:none; color:var(--primary); cursor:pointer; font-size:12px;" onclick="S.celebrations.splice('+i+',1);save();renderCelList();renderHome();"><i class="fa-solid fa-trash"></i></button></div>').join('');
+}
+
+function addCel(){
+  const name=document.getElementById('cel-name')?.value.trim();
+  const date=document.getElementById('cel-date')?.value;
+  if(!name||!date){showT('Completa nombre y fecha'); return;}
+  if(!S.celebrations) S.celebrations = [];
+  S.celebrations.push({name,date});
+  save();
+  renderCelList();
+  renderHome();
+  if(document.getElementById('cel-name')) document.getElementById('cel-name').value='';
+  if(document.getElementById('cel-date')) document.getElementById('cel-date').value='';
+  completeMission(6);
+  showT('Celebración configurada 🎉');
+}
+
+// ===================== PROACTIVE AI =====================
+function startProactive(){
+  const msgs=[
+    "🤖 Hace días que no registras un recuerdo. ¿Quieres contarme algo de hoy?",
+    "💡 ¿Sabías que las familias que comparten tiempo libre fortalecen sus lazos significativamente?",
+    "🎁 Hay celebraciones que se aproximan en la familia. ¿Quieres ideas de sorpresas?",
+    "📸 Un pequeño momento cotidiano de hoy puede ser un gran tesoro biográfico mañana."
+  ];
+  setTimeout(()=>{
+    const text = msgs[Math.floor(Math.random()*msgs.length)];
+    showProactive(text);
+  },6000);
+}
+
+function showProactive(text){
+  const el = document.getElementById('proactive-text');
+  if(el) el.textContent = text;
+  const p = document.getElementById('proactive');
+  if(p) p.style.display = 'flex';
+}
+
+function acceptProactive(){
+  const p = document.getElementById('proactive');
+  if(p) p.style.display = 'none';
+  showT('✨ Sugerencia procesada por FamIA');
+}
+
+function triggerProactive(){
+  showT('✨ FamIA está preparando una sorpresa familiar...');
+}
+
+// ===================== UTILS =====================
+function showT(msg){
+  const t=document.getElementById('toast');
+  const txt=document.getElementById('toast-txt');
+  if(!t || !txt) return;
+  txt.textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+function openModal(id){
+  const m = document.getElementById(id);
+  if(m) m.classList.add('active');
+  if(id==='modal-leg'){
+    const authSelect = document.getElementById('leg-auth');
+    if(authSelect && S.members){
+      authSelect.innerHTML=S.members.map(m=>'<option>'+esc(m.name)+'</option>').join('');
+    }
+  }
+}
+
+function closeModal(id){
+  const m = document.getElementById(id);
+  if(m) m.classList.remove('active');
+}
+
+function esc(s){
+  return(s||'').toString().replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+}
+
+function exportData(){
+  const blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download='tyango-'+(S.familyName||'familia')+'-backup.json';
+  a.click();
+  showT('Datos exportados 📥');
+}
+
+function resetAll(){
+  if(confirm('¿Eliminar TODOS los datos? Esta acción es irreversible.')){
+    try { localStorage.removeItem('tyango_v3'); } catch(e){}
+    location.reload();
+  }
+}
+
+function renderSettings(){
+  const link = document.getElementById('set-link');
+  if(link) link.textContent='https://tyango.app/join/'+Math.random().toString(36).substr(2,8);
+}
+
+// ===================== BOOT RUNNER =====================
+document.addEventListener('DOMContentLoaded',()=>{
+  try {
+    if(load() && S && S.familyName){
+      finishOB();
+    } else {
+      loadDemoData();
+    }
+  } catch(e) {
+    console.error('Boot error:', e);
+    loadDemoData();
+  }
+});
+</script>
+</body>
+</html>
