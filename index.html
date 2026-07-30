@@ -7,20 +7,19 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="TyanGO Home">
-<title>TyanGO Home — El hogar digital de tu familia</title>
+<title>Memories by TyanGO — Recuerdos Vivos de tu Familia</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 /* ==========================================================================
-   TYANGO BRAND TYPOGRAPHY SYSTEM (Sora × Manrope)
+   TYANGO BRAND TYPOGRAPHY & DESIGN SYSTEM (Sora × Manrope)
    ========================================================================== */
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Manrope:wght@400;500;600;700;800&family=Sora:wght@400;600;700;800&display=swap');
 
 :root {
-  /* Font Family Definitions */
   --font-display: 'Sora', -apple-system, system-ui, sans-serif;
   --font-body: 'Manrope', -apple-system, system-ui, sans-serif;
+  --font-handwriting: 'Caveat', cursive;
 
-  /* Typography Scale System */
   --text-xs: 0.725rem;   /* 11.6px */
   --text-sm: 0.8125rem;  /* 13px */
   --text-base: 0.9375rem;/* 15px */
@@ -29,7 +28,6 @@
   --text-2xl: 1.75rem;   /* 28px */
   --text-3xl: 2.125rem;  /* 34px */
 
-  /* Color Palette (Purple × Palo de Rosa) */
   --bg-main: #FAF7F9;
   --bg-card: rgba(255, 255, 255, 0.88);
   --bg-card-solid: #FFFFFF;
@@ -60,7 +58,7 @@
   --shadow-md: 0 8px 24px rgba(35, 28, 48, 0.06);
   --shadow-lg: 0 16px 40px rgba(35, 28, 48, 0.10);
   
-  --glass: rgba(255, 255, 255, 0.78);
+  --glass: rgba(255, 255, 255, 0.82);
   --radius-lg: 24px;
   --radius-md: 16px;
   --radius-sm: 12px;
@@ -100,10 +98,10 @@
   --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.3);
   --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.4);
   
-  --glass: rgba(28, 23, 38, 0.78);
+  --glass: rgba(28, 23, 38, 0.85);
 }
 
-/* GLOBAL RESET & TYPOGRAPHY ENFORCEMENT */
+/* RESET & BASE */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -151,13 +149,13 @@ h3 { font-size: var(--text-xl); font-weight: 700; }
 h4 { font-size: var(--text-lg); font-weight: 600; }
 h5 { font-size: var(--text-base); font-weight: 600; }
 
-/* BUTTONS & BADGES (MANROPE) */
+/* BUTTONS & BADGES */
 .btn-primary {
   font-family: var(--font-body);
   background: linear-gradient(135deg, var(--primary), var(--rose-dark));
   color: #FFFFFF;
   border: none;
-  padding: 14px 28px;
+  padding: 13px 24px;
   border-radius: var(--radius-full);
   font-size: var(--text-sm);
   font-weight: 700;
@@ -165,10 +163,10 @@ h5 { font-size: var(--text-base); font-weight: 600; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   box-shadow: 0 4px 18px var(--primary-glow);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  letter-spacing: -0.01em;
+  white-space: nowrap;
 }
 
 .btn-primary:hover {
@@ -183,7 +181,7 @@ h5 { font-size: var(--text-base); font-weight: 600; }
   background: var(--bg-card-solid);
   color: var(--navy);
   border: 1px solid var(--border-strong);
-  padding: 13px 24px;
+  padding: 12px 20px;
   border-radius: var(--radius-full);
   font-size: var(--text-sm);
   font-weight: 600;
@@ -194,6 +192,7 @@ h5 { font-size: var(--text-base); font-weight: 600; }
   gap: 8px;
   transition: all 0.25s ease;
   box-shadow: var(--shadow-sm);
+  white-space: nowrap;
 }
 
 .btn-secondary:hover {
@@ -212,650 +211,241 @@ h5 { font-size: var(--text-base); font-weight: 600; }
   border-radius: var(--radius-full);
   font-size: var(--text-xs);
   font-weight: 700;
-  letter-spacing: 0.01em;
 }
 .badge-primary { background: var(--primary-light); color: var(--primary); }
 .badge-rose { background: var(--rose-light); color: var(--rose); }
 .badge-amber { background: var(--amber-light); color: var(--amber); }
 
-/* ONBOARDING OVERLAY */
-.onboarding-screen-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-  background: var(--bg-main);
-  background-image: 
-    radial-gradient(at 20% 10%, rgba(124, 101, 169, 0.15) 0px, transparent 60%),
-    radial-gradient(at 80% 90%, rgba(201, 138, 152, 0.15) 0px, transparent 60%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  overflow-y: auto;
-  transition: opacity 0.5s ease;
+/* ==========================================================================
+   MEMORIES BY TYANGO — 5 POLAROID STYLES
+   ========================================================================== */
+.polaroid-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
 }
 
-.onboarding-screen-overlay.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.onboarding-container {
-  max-width: 520px;
-  width: 100%;
-  background: var(--bg-card-solid);
-  border: 1px solid var(--border-strong);
-  border-radius: 32px;
-  padding: 44px 38px;
-  box-shadow: var(--shadow-lg);
-  text-align: center;
+/* 1. CLASSIC POLAROID */
+.polaroid-frame-classic {
+  background: #FFFDF9;
+  border-radius: 6px;
+  padding: 14px 14px 24px 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.06);
   position: relative;
-  animation: onboardingFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  color: #2D2738;
 }
 
-@keyframes onboardingFadeIn {
-  from { opacity: 0; transform: translateY(20px) scale(0.97); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+.polaroid-frame-classic:hover {
+  transform: translateY(-6px) rotate(-1deg);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.18);
 }
 
-.onboarding-step-content {
-  display: none;
-  animation: stepSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+.polaroid-photo-box {
+  width: 100%;
+  aspect-ratio: 1/1;
+  overflow: hidden;
+  background: #111;
+  position: relative;
 }
 
-.onboarding-step-content.active { display: block; }
-
-@keyframes stepSlide {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+.polaroid-photo-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.onboarding-logo-badge {
-  width: 68px;
-  height: 68px;
-  border-radius: 24px;
-  background: linear-gradient(135deg, var(--primary), var(--rose));
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 30px;
-  margin: 0 auto 24px;
-  box-shadow: 0 8px 24px var(--primary-glow);
+.polaroid-caption-area {
+  padding-top: 14px;
+  text-align: center;
 }
 
-.onboarding-heading {
-  font-family: var(--font-display);
-  font-size: var(--text-2xl);
-  font-weight: 800;
-  color: var(--navy);
-  margin-bottom: 10px;
+.polaroid-handwriting-title {
+  font-family: var(--font-handwriting);
+  font-size: 22px;
+  color: #2D2738;
   line-height: 1.2;
 }
 
-.onboarding-subheading {
+.polaroid-meta-text {
+  font-size: 11px;
+  color: #7E768E;
+  margin-top: 4px;
   font-family: var(--font-body);
-  font-size: var(--text-base);
-  color: var(--text-muted);
-  line-height: 1.6;
-  margin-bottom: 32px;
 }
 
-.onboarding-input-group {
-  margin-bottom: 22px;
-  text-align: left;
+.polaroid-reflection-quote {
+  font-size: 11.5px;
+  color: #5C478A;
+  font-style: italic;
+  margin-top: 6px;
+  line-height: 1.4;
 }
 
-.onboarding-input-group label {
+/* 2. VINTAGE FILM */
+.polaroid-frame-vintage {
+  background: #1A1624;
+  border-radius: 8px;
+  padding: 18px 14px;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.3);
+  position: relative;
+  color: #F3EFF8;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.polaroid-frame-vintage::before, .polaroid-frame-vintage::after {
+  content: '•••••••••••••••••••••••••';
   display: block;
-  font-family: var(--font-body);
-  font-size: var(--text-xs);
-  font-weight: 800;
-  color: var(--primary);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: 8px;
+  font-size: 10px;
+  letter-spacing: 6px;
+  color: rgba(255,255,255,0.2);
+  text-align: center;
+  margin: 4px 0;
 }
 
-.onboarding-input-group input,
-.onboarding-input-group select,
-.onboarding-input-group textarea {
-  width: 100%;
-  padding: 15px 20px;
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-md);
-  font-family: var(--font-body);
-  font-size: var(--text-base);
-  background: var(--bg-main);
-  color: var(--text);
-  outline: none;
-  transition: all 0.2s ease;
+/* 3. MEMORY FRAME */
+.polaroid-frame-memory {
+  background: linear-gradient(135deg, #FDFBF7, #F4EBE1);
+  border: 8px solid #D4A359;
+  border-radius: 4px;
+  padding: 16px;
+  box-shadow: 0 14px 40px rgba(212, 163, 89, 0.25);
+  color: #261F35;
 }
 
-.onboarding-input-group input:focus,
-.onboarding-input-group select:focus,
-.onboarding-input-group textarea:focus {
-  border-color: var(--primary);
-  background: var(--bg-card-solid);
-  box-shadow: 0 0 0 4px var(--primary-light);
+/* 4. SCRAPBOOK */
+.polaroid-frame-scrapbook {
+  background: #FFFDF7;
+  border-radius: 2px;
+  padding: 16px 16px 28px 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  position: relative;
+  transform: rotate(1deg);
 }
 
-.auth-providers-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 20px;
+.polaroid-frame-scrapbook::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 20px;
+  width: 50px;
+  height: 20px;
+  background: rgba(201, 138, 152, 0.35);
+  transform: rotate(-4deg);
 }
 
-.auth-provider-btn {
-  font-family: var(--font-body);
-  width: 100%;
-  padding: 14px;
-  border-radius: var(--radius-full);
-  border: 1px solid var(--border-strong);
-  background: var(--bg-card-solid);
-  font-size: var(--text-sm);
-  font-weight: 600;
-  color: var(--navy);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  transition: all 0.2s ease;
+/* 5. LEGACY */
+.polaroid-frame-legacy {
+  background: linear-gradient(135deg, #231C30, #3B2E52);
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid #D4A359;
+  box-shadow: 0 14px 40px rgba(0,0,0,0.3);
+  color: #FAF7F9;
 }
 
-.auth-provider-btn:hover {
-  background: var(--primary-light);
-  border-color: var(--primary);
-}
-
-/* NAVIGATION & WORKSPACE SWITCHER */
-.home-switcher-btn {
-  font-family: var(--font-body);
+/* AI SUGGESTION BANNER */
+.ai-milestone-banner {
+  background: linear-gradient(135deg, rgba(124, 101, 169, 0.15), rgba(201, 138, 152, 0.15));
+  border: 1px dashed var(--primary);
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  background: var(--bg-card-solid);
-  border: 1px solid var(--border-strong);
-  padding: 7px 16px;
-  border-radius: var(--radius-full);
-  cursor: pointer;
-  font-size: var(--text-sm);
-  font-weight: 700;
-  color: var(--navy);
-  box-shadow: var(--shadow-sm);
-  transition: all 0.2s ease;
-}
-
-.home-switcher-btn:hover {
-  border-color: var(--primary);
-  color: var(--primary);
-}
-
-/* MAIN APP LAYOUT */
-#app-root {
-  display: flex;
-  height: 100vh;
-  height: 100dvh;
-  width: 100vw;
-  overflow: hidden;
-}
-
-.app-sidebar {
-  width: 270px;
-  background: var(--glass);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border-right: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
   justify-content: space-between;
-  padding: 24px 18px;
-  padding-top: calc(24px + var(--safe-top));
-  z-index: 100;
-  flex-shrink: 0;
+  gap: 16px;
+  margin-bottom: 24px;
 }
 
-.brand-header {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 0 8px 24px 8px;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 18px;
-}
-
-.brand-logo-icon {
-  width: 44px;
-  height: 44px;
-  background: linear-gradient(135deg, var(--primary), var(--rose));
-  border-radius: var(--radius-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 20px;
-  box-shadow: 0 6px 16px var(--primary-glow);
-}
-
-.brand-title-group h1 {
-  font-family: var(--font-display);
-  font-size: var(--text-lg);
-  font-weight: 800;
-  color: var(--navy);
-  letter-spacing: -0.03em;
-}
-
-.brand-title-group span {
-  font-family: var(--font-body);
-  font-size: var(--text-xs);
-  color: var(--text-muted);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
+/* MAIN LAYOUT */
+#app-root { display: flex; height: 100vh; height: 100dvh; width: 100vw; overflow: hidden; }
+.app-sidebar { width: 260px; background: var(--glass); backdrop-filter: blur(24px); border-right: 1px solid var(--border); display: flex; flex-direction: column; justify-content: space-between; padding: 24px 16px; padding-top: calc(24px + var(--safe-top)); z-index: 100; flex-shrink: 0; }
+.brand-header { display: flex; align-items: center; gap: 12px; padding: 0 8px 20px 8px; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+.brand-logo-icon { width: 40px; height: 40px; background: linear-gradient(135deg, var(--primary), var(--rose)); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; box-shadow: 0 6px 16px var(--primary-glow); }
+.brand-title-group h1 { font-family: var(--font-display); font-size: var(--text-lg); font-weight: 800; color: var(--navy); }
+.brand-title-group span { font-family: var(--font-body); font-size: var(--text-xs); color: var(--text-muted); font-weight: 700; text-transform: uppercase; }
 
 .nav-list { display: flex; flex-direction: column; gap: 4px; flex: 1; overflow-y: auto; }
-
-.nav-link {
-  font-family: var(--font-body);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  border-radius: var(--radius-md);
-  color: var(--text-muted);
-  font-size: var(--text-sm);
-  font-weight: 600;
-  cursor: pointer;
-  text-decoration: none;
-  transition: all 0.25s ease;
-  border: 1px solid transparent;
-}
-
-.nav-link:hover {
-  background: var(--primary-light);
-  color: var(--navy);
-  transform: translateX(3px);
-}
-
-.nav-link.active {
-  background: var(--bg-card-solid);
-  color: var(--primary);
-  font-weight: 700;
-  border-color: var(--border-strong);
-  box-shadow: var(--shadow-sm);
-}
-
+.nav-link { font-family: var(--font-body); display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: var(--radius-md); color: var(--text-muted); font-size: var(--text-sm); font-weight: 600; cursor: pointer; text-decoration: none; transition: all 0.25s ease; border: 1px solid transparent; }
+.nav-link:hover { background: var(--primary-light); color: var(--navy); transform: translateX(3px); }
+.nav-link.active { background: var(--bg-card-solid); color: var(--primary); font-weight: 700; border-color: var(--border-strong); box-shadow: var(--shadow-sm); }
 .nav-link i { font-size: 16px; width: 20px; text-align: center; }
-.nav-link .nav-pill { margin-left: auto; background: var(--rose); color: white; font-size: 9px; font-weight: 800; padding: 2px 8px; border-radius: var(--radius-full); }
+.nav-link .nav-pill { margin-left: auto; background: var(--rose); color: white; font-size: 9px; font-weight: 800; padding: 2px 7px; border-radius: var(--radius-full); }
 
-.sidebar-family-card {
-  background: var(--bg-card-solid);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  padding: 14px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  box-shadow: var(--shadow-sm);
-}
-
+.sidebar-family-card { background: var(--bg-card-solid); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px; display: flex; align-items: center; gap: 10px; box-shadow: var(--shadow-sm); }
 .avatar-stack { display: flex; margin-left: -6px; }
-.avatar-pill {
-  font-family: var(--font-display);
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: 2px solid var(--bg-card-solid);
-  background: linear-gradient(135deg, var(--primary), var(--rose));
-  color: white;
-  font-size: 11px;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+.avatar-pill { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--bg-card-solid); background: linear-gradient(135deg, var(--primary), var(--rose)); color: white; font-size: 10px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
 
 .app-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.app-topbar { height: 64px; padding: 0 28px; padding-top: var(--safe-top); display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); background: var(--glass); backdrop-filter: blur(16px); z-index: 10; }
+.topbar-left-group { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.topbar-titles { min-width: 0; }
+.topbar-titles h2 { font-family: var(--font-display); font-size: var(--text-lg); font-weight: 800; color: var(--navy); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.topbar-titles p { font-family: var(--font-body); font-size: var(--text-xs); color: var(--text-muted); white-space: nowrap; }
+.topbar-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
 
-.app-topbar {
-  height: 68px;
-  padding: 0 32px;
-  padding-top: var(--safe-top);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid var(--border);
-  background: var(--glass);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  z-index: 10;
-}
+.theme-toggle-btn { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--border); background: var(--bg-card-solid); display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-muted); font-size: 15px; box-shadow: var(--shadow-sm); flex-shrink: 0; }
 
-.topbar-titles h2 { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 800; color: var(--navy); }
-.topbar-titles p { font-family: var(--font-body); font-size: var(--text-xs); color: var(--text-muted); }
-
-.topbar-actions { display: flex; align-items: center; gap: 12px; }
-
-.theme-toggle-btn {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  border: 1px solid var(--border);
-  background: var(--bg-card-solid);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--text-muted);
-  font-size: 16px;
-  transition: all 0.3s ease;
-  box-shadow: var(--shadow-sm);
-}
-.theme-toggle-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); transform: rotate(15deg); }
-
-.view-viewport { flex: 1; overflow-y: auto; padding: 32px; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
-.view-page { display: none; animation: pageFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); max-width: 1120px; margin: 0 auto; }
+.view-viewport { flex: 1; overflow-y: auto; padding: 28px; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
+.view-page { display: none; animation: pageFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); max-width: 1100px; margin: 0 auto; }
 .view-page.active { display: block; }
 
 @keyframes pageFadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
-.card-glass {
-  background: var(--bg-card); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px; box-shadow: var(--shadow-md); transition: all 0.3s ease;
-}
-.card-glass:hover { box-shadow: var(--shadow-lg); }
+.card-glass { background: var(--bg-card); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--shadow-md); transition: all 0.3s ease; }
 
-.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
-.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 
-/* HOME HERO */
-.home-story-hero {
-  background: linear-gradient(135deg, rgba(124, 101, 169, 0.12), rgba(201, 138, 152, 0.12));
-  border: 1px solid var(--border-strong); border-radius: var(--radius-lg); padding: 36px; margin-bottom: 28px; position: relative; overflow: hidden; box-shadow: var(--shadow-md);
-}
+/* MODAL */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; }
+.modal-overlay.active { display: flex; }
+.modal-box { background: var(--bg-card-solid); border-radius: var(--radius-lg); border: 1px solid var(--border-strong); max-width: 500px; width: 100%; padding: 28px; box-shadow: var(--shadow-lg); max-height: 90vh; overflow-y: auto; }
 
-.story-header-tag {
-  font-family: var(--font-body);
-  display: inline-flex; align-items: center; gap: 6px; background: var(--bg-card-solid); color: var(--primary); padding: 6px 16px; border-radius: var(--radius-full); font-size: var(--text-xs); font-weight: 800; margin-bottom: 16px; box-shadow: var(--shadow-sm);
-}
-
-.story-main-greeting {
-  font-family: var(--font-display);
-  font-size: var(--text-3xl);
-  font-weight: 800;
-  color: var(--navy);
-  line-height: 1.25;
-  margin-bottom: 14px;
-  letter-spacing: -0.03em;
-}
-
-.story-narration-paragraph {
-  font-family: var(--font-body);
-  font-size: var(--text-base);
-  color: var(--text-muted);
-  line-height: 1.7;
-  max-width: 760px;
-  margin-bottom: 28px;
-}
-
-.story-cards-row { display: flex; gap: 16px; flex-wrap: wrap; }
-.story-card-item { flex: 1; min-width: 240px; background: var(--bg-card-solid); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px; display: flex; align-items: flex-start; gap: 14px; box-shadow: var(--shadow-sm); }
-.story-icon-box { width: 42px; height: 42px; border-radius: 50%; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
-.story-card-item h5 { font-family: var(--font-display); font-size: var(--text-sm); font-weight: 700; color: var(--navy); margin-bottom: 4px; }
-.story-card-item p { font-family: var(--font-body); font-size: var(--text-xs); color: var(--text-muted); line-height: 1.5; }
-
-.famia-coach-card { background: var(--bg-card-solid); border: 1px dashed var(--border-strong); border-radius: var(--radius-lg); padding: 28px; display: flex; align-items: center; gap: 24px; box-shadow: var(--shadow-sm); }
-.famia-avatar-spark { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--rose)); color: white; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 6px 20px var(--primary-glow); flex-shrink: 0; }
-
-/* BIOGRAPHIES */
-.member-bio-card { background: var(--bg-card-solid); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px; box-shadow: var(--shadow-md); transition: all 0.3s ease; }
-.member-bio-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
-.member-card-header { display: flex; align-items: center; gap: 18px; margin-bottom: 24px; }
-.member-card-avatar { font-family: var(--font-display); width: 68px; height: 68px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--rose)); color: white; font-size: 26px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 18px var(--primary-glow); }
-.member-card-meta h3 { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 800; color: var(--navy); }
-.member-card-meta span { font-family: var(--font-body); font-size: var(--text-xs); color: var(--primary); font-weight: 700; background: var(--primary-light); padding: 3px 12px; border-radius: var(--radius-full); }
-
-.bio-attribute-row { display: flex; flex-direction: column; gap: 10px; }
-.bio-attr-item { background: var(--bg-main); padding: 12px 16px; border-radius: var(--radius-sm); border: 1px solid var(--border); font-size: var(--text-sm); font-family: var(--font-body); }
-.bio-attr-item strong { color: var(--primary); display: block; font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px; }
-
-/* TIMELINE */
-.timeline-vertical-spine { position: relative; max-width: 880px; margin: 0 auto; padding: 24px 0; }
-.timeline-vertical-spine::before { content: ''; position: absolute; top: 0; bottom: 0; left: 28px; width: 3px; background: linear-gradient(180deg, var(--primary), var(--rose), var(--amber)); border-radius: 4px; }
-@media(min-width: 768px) { .timeline-vertical-spine::before { left: 50%; transform: translateX(-50%); } }
-.timeline-card-node { position: relative; margin-bottom: 36px; width: 100%; }
-.timeline-node-dot { position: absolute; top: 24px; left: 17px; width: 24px; height: 24px; border-radius: 50%; background: var(--bg-card-solid); border: 4px solid var(--primary); box-shadow: 0 0 0 4px var(--primary-light); z-index: 5; }
-@media(min-width: 768px) { .timeline-node-dot { left: 50%; transform: translateX(-50%); } }
-.timeline-card-content { margin-left: 60px; background: var(--bg-card-solid); border: 1px solid var(--border-strong); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md); transition: all 0.3s ease; }
-.timeline-card-content:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
-@media(min-width: 768px) {
-  .timeline-card-node.left-side .timeline-card-content { width: 44%; margin-left: 0; }
-  .timeline-card-node.right-side .timeline-card-content { width: 44%; margin-left: 56%; }
-}
-.timeline-photo-wrapper { position: relative; width: 100%; height: 230px; overflow: hidden; background: var(--bg-subtle); cursor: pointer; }
-.timeline-photo-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
-.timeline-photo-wrapper:hover img { transform: scale(1.05); }
-.timeline-photo-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.5) 100%); display: flex; align-items: flex-end; padding: 14px 18px; color: white; font-size: var(--text-xs); font-weight: 600; }
-.timeline-body-padding { padding: 22px; }
-.timeline-meta-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-.timeline-date-chip { font-size: var(--text-xs); font-weight: 800; color: var(--primary); background: var(--primary-light); padding: 4px 14px; border-radius: var(--radius-full); }
-.timeline-title { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 700; color: var(--navy); margin-bottom: 8px; }
-.timeline-description { font-family: var(--font-body); font-size: var(--text-sm); color: var(--text-muted); line-height: 1.6; }
-
-/* CHAT */
-.chat-container { display: flex; height: calc(100vh - 140px); background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md); }
-.chat-messages-area { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
-.chat-history { flex: 1; overflow-y: auto; padding: 28px; display: flex; flex-direction: column; gap: 14px; }
-.chat-bubble { max-width: 78%; padding: 16px 20px; border-radius: 20px; font-size: var(--text-base); line-height: 1.6; animation: bubblePop 0.3s ease; }
-.chat-bubble.ai { background: var(--bg-card-solid); border: 1px solid var(--border); align-self: flex-start; border-bottom-left-radius: 4px; color: var(--text); }
-.chat-bubble.user { background: linear-gradient(135deg, var(--primary), var(--rose-dark)); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
-.chat-input-bar { padding: 18px 24px; border-top: 1px solid var(--border); background: var(--glass); display: flex; gap: 12px; padding-bottom: calc(18px + var(--safe-bottom)); }
-.chat-input-bar input { flex: 1; padding: 15px 22px; border: 1px solid var(--border-strong); border-radius: var(--radius-full); outline: none; font-size: var(--text-sm); background: var(--bg-card-solid); color: var(--text); }
-
-@media (max-width: 1024px) {
-  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
-  .app-sidebar { position: fixed; left: 0; bottom: 0; width: 100%; height: auto; flex-direction: row; padding: 8px 12px; padding-bottom: calc(8px + var(--safe-bottom)); z-index: 200; border-right: none; border-top: 1px solid var(--border); background: var(--glass); }
-  .brand-header, .sidebar-family-card { display: none; }
-  .nav-list { flex-direction: row; width: 100%; justify-content: space-around; gap: 0; }
-  .nav-link { flex-direction: column; gap: 3px; padding: 6px 10px; font-size: var(--text-xs); border-radius: var(--radius-sm); flex: 1; text-align: center; }
-  .nav-link i { font-size: 18px; }
-  .nav-link .nav-pill { display: none; }
-  .app-main { padding-bottom: calc(64px + var(--safe-bottom)); }
-  .app-topbar { padding: 0 16px; padding-top: var(--safe-top); height: calc(56px + var(--safe-top)); }
-  .view-viewport { padding: 16px; }
+/* MOBILE RESPONSIVE */
+@media (max-width: 768px) {
+  .grid-2, .grid-3 { grid-template-columns: 1fr !important; gap: 14px !important; }
+  .app-topbar { padding: 0 14px !important; padding-top: var(--safe-top) !important; height: calc(56px + var(--safe-top)) !important; }
+  .topbar-titles p { display: none !important; }
+  .topbar-titles h2 { font-size: 15px !important; max-width: 140px; }
+  .view-viewport { padding: 14px !important; }
+  .card-glass { padding: 18px 14px !important; }
+  .app-sidebar { position: fixed !important; left: 0 !important; bottom: 0 !important; width: 100% !important; height: calc(60px + var(--safe-bottom)) !important; flex-direction: row !important; padding: 4px 6px !important; z-index: 200 !important; border-top: 1px solid var(--border) !important; background: rgba(255, 255, 255, 0.92) !important; backdrop-filter: blur(20px) !important; }
+  .brand-header, .sidebar-family-card { display: none !important; }
+  .nav-list { flex-direction: row !important; width: 100% !important; justify-content: space-around !important; gap: 0 !important; }
+  .nav-link { flex-direction: column !important; gap: 2px !important; padding: 6px 4px !important; font-size: 9.5px !important; border-radius: 8px !important; flex: 1 !important; text-align: center !important; border: none !important; background: transparent !important; color: var(--text-muted) !important; }
+  .nav-link.active { color: var(--primary) !important; font-weight: 800 !important; }
+  .nav-link i { font-size: 17px !important; margin: 0 auto !important; }
+  .nav-link .nav-pill { display: none !important; }
+  .app-main { padding-bottom: calc(60px + var(--safe-bottom)) !important; }
 }
 </style>
 </head>
 <body>
 
-<!-- ONBOARDING & SETUP OVERLAY -->
-<div class="onboarding-screen-overlay" id="onboarding-overlay">
-  <div class="onboarding-container" id="onboarding-box">
-    
-    <!-- STEP 0: INITIAL WELCOME SCREEN (NO FORMS) -->
-    <div class="onboarding-step-content active" id="onb-step-0">
-      <div class="onboarding-logo-badge"><i class="fa-solid fa-house-heart"></i></div>
-      <h2 class="onboarding-heading">Bienvenido a TyanGO Home</h2>
-      <p class="onboarding-subheading">El hogar digital donde vive la historia de tu familia.</p>
-
-      <div style="display:flex; flex-direction:column; gap:12px; max-width:340px; margin:0 auto 24px;">
-        <button class="btn-primary" style="width:100%; justify-content:center;" onclick="goOnboardingStep(1)">
-          <i class="fa-solid fa-heart-circle-plus"></i> Crear mi hogar
-        </button>
-        <button class="btn-secondary" style="width:100%; justify-content:center;" onclick="goOnboardingStep('join')">
-          <i class="fa-solid fa-key"></i> Ya tengo un hogar
-        </button>
-      </div>
-
-      <button class="btn-secondary" style="border:none; background:transparent; box-shadow:none; font-size:var(--text-sm); color:var(--text-muted);" onclick="loadDemoHome()">
-        ✨ Probar Demo (Familia Mendoza)
-      </button>
-    </div>
-
-    <!-- STEP 1: NOMBRE DEL HOGAR -->
-    <div class="onboarding-step-content" id="onb-step-1">
-      <div class="onboarding-logo-badge" style="background:linear-gradient(135deg, var(--rose), var(--primary));"><i class="fa-solid fa-house-chimney"></i></div>
-      <h2 class="onboarding-heading">¿Cómo se llama tu hogar?</h2>
-      <p class="onboarding-subheading">Este será el espacio privado donde vivirán sus momentos.</p>
-
-      <div class="onboarding-input-group">
-        <label>Nombre del hogar</label>
-        <input type="text" id="onb-home-name-input" placeholder="Ej: Familia Ramírez, Los Mendoza, Casa Herrera">
-      </div>
-
-      <button class="btn-primary" style="width:100%; justify-content:center;" onclick="submitStep1()">
-        Continuar <i class="fa-solid fa-arrow-right"></i>
-      </button>
-    </div>
-
-    <!-- STEP 2: CUÉNTANOS SOBRE TI -->
-    <div class="onboarding-step-content" id="onb-step-2">
-      <div class="onboarding-logo-badge"><i class="fa-solid fa-user-heart"></i></div>
-      <h2 class="onboarding-heading">Cuéntanos sobre ti</h2>
-      <p class="onboarding-subheading">Tus datos ayudarán a personalizar las interacciones.</p>
-
-      <div class="onboarding-input-group">
-        <label>Tu nombre</label>
-        <input type="text" id="onb-user-name-input" placeholder="Ej: Elena, Carlos, Sofía">
-      </div>
-
-      <div class="onboarding-input-group">
-        <label>Tu rol en el hogar</label>
-        <select id="onb-user-role-input">
-          <option>Madre</option>
-          <option>Padre</option>
-          <option>Hija</option>
-          <option>Hijo</option>
-          <option>Abuela</option>
-          <option>Abuelo</option>
-          <option>Tutor</option>
-          <option>Otro</option>
-        </select>
-      </div>
-
-      <button class="btn-primary" style="width:100%; justify-content:center;" onclick="submitStep2()">
-        Continuar <i class="fa-solid fa-arrow-right"></i>
-      </button>
-    </div>
-
-    <!-- STEP 3: MIEMBROS DEL HOGAR -->
-    <div class="onboarding-step-content" id="onb-step-3">
-      <div class="onboarding-logo-badge" style="background:linear-gradient(135deg, var(--amber), var(--rose));"><i class="fa-solid fa-users-medical"></i></div>
-      <h2 class="onboarding-heading">¿Quiénes forman parte de tu hogar?</h2>
-      <p class="onboarding-subheading">Agrega a los familiares que compartirán este espacio.</p>
-
-      <div style="display:flex; gap:10px; margin-bottom:16px;">
-        <input type="text" id="onb-member-name" placeholder="Nombre" style="flex:1; padding:13px; border:1px solid var(--border-strong); border-radius:var(--radius-sm); font-size:var(--text-sm); background:var(--bg-main); color:var(--text);">
-        <select id="onb-member-role" style="padding:13px; border:1px solid var(--border-strong); border-radius:var(--radius-sm); font-size:var(--text-sm); background:var(--bg-main); color:var(--text);">
-          <option>Hijo</option><option>Hija</option><option>Padre</option><option>Madre</option><option>Abuelo</option><option>Abuela</option><option>Mascota</option>
-        </select>
-        <button class="btn-primary" style="padding:13px 18px;" onclick="addMemberToOnboarding()">+</button>
-      </div>
-
-      <div id="onb-members-list" style="margin-bottom:24px; text-align:left; min-height:40px;"></div>
-
-      <div style="display:flex; gap:12px;">
-        <button class="btn-secondary" style="flex:1;" onclick="goOnboardingStep(4)">Omitir por ahora</button>
-        <button class="btn-primary" style="flex:1;" onclick="goOnboardingStep(4)">Continuar <i class="fa-solid fa-arrow-right"></i></button>
-      </div>
-    </div>
-
-    <!-- STEP 4: TRADICIONES Y MEMORIA FAMILIAR -->
-    <div class="onboarding-step-content" id="onb-step-4">
-      <div class="onboarding-logo-badge"><i class="fa-solid fa-brain-circuit"></i></div>
-      <h2 class="onboarding-heading">Tradiciones de tu Familia</h2>
-      <p class="onboarding-subheading">FamIA aprende desde hoy para cuidar sus recuerdos.</p>
-
-      <div class="onboarding-input-group">
-        <label>¿Cuál es su tradición o actividad favorita juntos?</label>
-        <input type="text" id="onb-tradition-input" placeholder="Ej: Cocinar paella los domingos, ver películas con rosetas">
-      </div>
-
-      <div class="onboarding-input-group">
-        <label>¿Qué valor o frase representa mejor a su familia?</label>
-        <input type="text" id="onb-value-input" placeholder="Ej: La paciencia construye hogares, Todo se arregla juntos">
-      </div>
-
-      <button class="btn-primary" style="width:100%; justify-content:center;" onclick="submitStep4()">
-        Crear Mi Hogar <i class="fa-solid fa-sparkles"></i>
-      </button>
-    </div>
-
-    <!-- STEP 5: HOGAR CREADO Y CÓDIGO -->
-    <div class="onboarding-step-content" id="onb-step-5">
-      <div class="onboarding-logo-badge" style="background:linear-gradient(135deg, var(--primary), var(--rose));"><i class="fa-solid fa-party-horn"></i></div>
-      <h2 class="onboarding-heading" id="created-home-title">Tu hogar está listo</h2>
-      <p class="onboarding-subheading">Comparte este código o enlace con tu familia para que se unan.</p>
-
-      <div style="background:var(--bg-main); border:1px dashed var(--primary); border-radius:var(--radius-md); padding:18px; margin-bottom:24px;">
-        <div style="font-size:var(--text-xs); font-weight:800; color:var(--primary); text-transform:uppercase;">Clave de acceso de tu hogar</div>
-        <div style="font-size:var(--text-2xl); font-weight:800; color:var(--navy); font-family:monospace; margin:8px 0;" id="home-created-code">HOME-X7Q2A9</div>
-        <button class="btn-secondary" style="font-size:var(--text-xs); padding:6px 16px;" onclick="copyHomeCode()"><i class="fa-solid fa-copy"></i> Copiar Código</button>
-      </div>
-
-      <div class="auth-providers-grid">
-        <div style="font-size:var(--text-xs); font-weight:700; color:var(--text-muted); margin-bottom:4px;">Guarda el acceso con tu cuenta habitual:</div>
-        <button class="auth-provider-btn" onclick="finishOnboardingWithAuth('Google')"><i class="fa-brands fa-google"></i> Continuar con Google</button>
-        <button class="auth-provider-btn" onclick="finishOnboardingWithAuth('Apple')"><i class="fa-brands fa-apple"></i> Continuar con Apple</button>
-        <button class="auth-provider-btn" onclick="finishOnboardingWithAuth('Correo Magic Link')"><i class="fa-solid fa-envelope"></i> Continuar con Correo (Magic Link)</button>
-      </div>
-    </div>
-
-    <!-- JOIN EXISTING HOME -->
-    <div class="onboarding-step-content" id="onb-step-join">
-      <div class="onboarding-logo-badge"><i class="fa-solid fa-key"></i></div>
-      <h2 class="onboarding-heading">Únete a tu hogar</h2>
-      <p class="onboarding-subheading">Ingresa la clave que te compartió tu familia.</p>
-
-      <div class="onboarding-input-group">
-        <label>Clave del hogar</label>
-        <input type="text" id="onb-join-code-input" placeholder="Ej: HOME-X7Q2A9">
-      </div>
-
-      <div style="display:flex; gap:12px;">
-        <button class="btn-secondary" style="flex:1;" onclick="goOnboardingStep(0)">Volver</button>
-        <button class="btn-primary" style="flex:1;" onclick="submitJoinHome()">Unirme al Hogar</button>
-      </div>
-    </div>
-
-    <!-- ANIMATION COMPLETION -->
-    <div class="onboarding-step-content" id="onb-step-final">
-      <div class="onboarding-logo-badge" style="width:84px; height:84px; font-size:40px; margin-bottom:28px;"><i class="fa-solid fa-house-heart"></i></div>
-      <h2 class="onboarding-heading" style="font-size:var(--text-3xl);">Tu hogar ya está listo.</h2>
-      <p class="onboarding-subheading" style="font-size:var(--text-base); max-width:460px; margin:0 auto 32px; line-height:1.7;">
-        "He comenzado a conocer la historia de tu familia. Con el tiempo recordaré sus tradiciones, sus momentos especiales y les ayudaré a crear muchos más."
-      </p>
-      <button class="btn-primary" style="padding:16px 40px; font-size:var(--text-base);" onclick="enterMainApp()">Entrar al Hogar <i class="fa-solid fa-arrow-right"></i></button>
-    </div>
-
-  </div>
-</div>
-
-<!-- MAIN APPLICATION UI -->
-<div id="app-root" style="display:none;">
+<div id="app-root">
   <aside class="app-sidebar">
     <div>
       <div class="brand-header">
         <div class="brand-logo-icon"><i class="fa-solid fa-house-heart"></i></div>
         <div class="brand-title-group">
           <h1>TyanGO Home</h1>
-          <span>Espacio Familiar</span>
+          <span>Memories Operating System</span>
         </div>
       </div>
       
       <nav class="nav-list">
-        <a class="nav-link active" data-target="home" onclick="navigateTo('home')">
+        <a class="nav-link active" data-target="memories" onclick="navigateTo('memories')">
+          <i class="fa-solid fa-camera-polaroid"></i><span>Memories</span><span class="nav-pill">IA</span>
+        </a>
+        <a class="nav-link" data-target="home" onclick="navigateTo('home')">
           <i class="fa-solid fa-sparkles"></i><span>Inicio</span>
         </a>
         <a class="nav-link" data-target="brain" onclick="navigateTo('brain')">
           <i class="fa-solid fa-brain"></i><span>Biografías</span>
         </a>
         <a class="nav-link" data-target="chat" onclick="navigateTo('chat')">
-          <i class="fa-solid fa-comments"></i><span>FamIA</span><span class="nav-pill">IA</span>
+          <i class="fa-solid fa-comments"></i><span>FamIA</span>
         </a>
         <a class="nav-link" data-target="timeline" onclick="navigateTo('timeline')">
           <i class="fa-solid fa-timeline"></i><span>Historia</span>
@@ -865,9 +455,6 @@ h5 { font-size: var(--text-base); font-weight: 600; }
         </a>
         <a class="nav-link" data-target="goals" onclick="navigateTo('goals')">
           <i class="fa-solid fa-trophy"></i><span>Misiones</span>
-        </a>
-        <a class="nav-link" data-target="radar" onclick="navigateTo('radar')">
-          <i class="fa-solid fa-heart-pulse"></i><span>Radar</span>
         </a>
         <a class="nav-link" data-target="settings" onclick="navigateTo('settings')">
           <i class="fa-solid fa-gear"></i><span>Ajustes</span>
@@ -887,17 +474,10 @@ h5 { font-size: var(--text-base); font-weight: 600; }
   <!-- MAIN VIEWPORT -->
   <main class="app-main">
     <header class="app-topbar">
-      <div class="topbar-titles" style="display:flex; align-items:center; gap:14px;">
-        <div>
-          <h2 id="topbar-title">La Historia de Tu Familia</h2>
-          <p id="topbar-subtitle">El hogar donde viven tus recuerdos</p>
-        </div>
-
-        <!-- MULTI-HOME WORKSPACE SWITCHER -->
-        <div class="home-switcher-dropdown">
-          <button class="home-switcher-btn" onclick="switchHomeWorkspace()">
-            <i class="fa-solid fa-house"></i> <span id="current-workspace-name">Familia Ramírez</span> <i class="fa-solid fa-chevron-down" style="font-size:10px;"></i>
-          </button>
+      <div class="topbar-left-group">
+        <div class="topbar-titles">
+          <h2 id="topbar-title">Memories by TyanGO</h2>
+          <p id="topbar-subtitle">Transforma tus fotos en recuerdos vivos con IA</p>
         </div>
       </div>
 
@@ -905,75 +485,65 @@ h5 { font-size: var(--text-base); font-weight: 600; }
         <button class="theme-toggle-btn" id="theme-btn" onclick="toggleTheme()" title="Cambiar tema">
           <i class="fa-solid fa-moon"></i>
         </button>
-        <button class="btn-primary" onclick="navigateTo('chat')">
-          <i class="fa-solid fa-wand-magic-sparkles"></i> Hablar con FamIA
+        <button class="btn-primary" onclick="openCreatePolaroidModal()">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> <span>Crear Polaroid</span>
         </button>
       </div>
     </header>
 
     <div class="view-viewport">
+      
+      <!-- MEMORIES BY TYANGO VIEW (MAIN SUITE) -->
+      <section id="view-memories" class="view-page active">
+        
+        <!-- SMART AI DETECTION SUGGESTION BANNER -->
+        <div class="ai-milestone-banner">
+          <div style="display:flex; align-items:center; gap:14px;">
+            <div style="width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg, var(--primary), var(--rose)); color:white; display:flex; align-items:center; justify-content:center; font-size:20px; box-shadow:0 4px 14px var(--primary-glow);">
+              <i class="fa-solid fa-sparkles"></i>
+            </div>
+            <div>
+              <h4 style="font-family:var(--font-display); font-size:var(--text-base); font-weight:800; color:var(--navy); margin-bottom:2px;">Detección Automática de Hito de FamIA</h4>
+              <p style="font-size:var(--text-xs); color:var(--text-muted);">FamIA detectó que la foto "Vacaciones en la Playa" representa un momento histórico. ¿Convertir en Polaroid viva?</p>
+            </div>
+          </div>
+          <button class="btn-primary" style="padding:10px 18px; font-size:var(--text-xs);" onclick="convertPhotoToPolaroid(0)">✨ Convertir en Recuerdo Permanente</button>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:12px;">
+          <div>
+            <h3 style="font-family:var(--font-display); font-size:var(--text-xl); font-weight:800; color:var(--navy);">Galería de Polaroids & Recuerdos Vivos</h3>
+            <p style="font-size:var(--text-xs); color:var(--text-muted);">Colección viva de tu familia presentada en 5 estilos exclusivos.</p>
+          </div>
+
+          <!-- STYLE FILTER BUTTONS -->
+          <div style="display:flex; gap:6px; flex-wrap:wrap;">
+            <button class="btn-secondary" style="font-size:11px; padding:6px 12px;" onclick="filterPolaroidStyle('all')">Todos</button>
+            <button class="btn-secondary" style="font-size:11px; padding:6px 12px;" onclick="filterPolaroidStyle('classic')">📸 Classic</button>
+            <button class="btn-secondary" style="font-size:11px; padding:6px 12px;" onclick="filterPolaroidStyle('vintage')">🎞️ Vintage</button>
+            <button class="btn-secondary" style="font-size:11px; padding:6px 12px;" onclick="filterPolaroidStyle('memory')">🖼️ Memory</button>
+            <button class="btn-secondary" style="font-size:11px; padding:6px 12px;" onclick="filterPolaroidStyle('scrapbook')">✂️ Scrapbook</button>
+            <button class="btn-secondary" style="font-size:11px; padding:6px 12px;" onclick="filterPolaroidStyle('legacy')">📜 Legacy</button>
+          </div>
+        </div>
+
+        <!-- POLAROIDS GRID -->
+        <div class="polaroid-grid" id="polaroids-container"></div>
+      </section>
+
       <!-- HOME VIEW -->
-      <section id="view-home" class="view-page active">
-        <div class="home-story-hero">
-          <span class="story-header-tag"><i class="fa-solid fa-feather-pointed"></i> Historia Viva de Hoy</span>
-          <h2 class="story-main-greeting" id="hero-greeting">"Buenos días. Hoy es un momento hermoso para conectar con tu familia."</h2>
-          <p class="story-narration-paragraph" id="hero-narration">
-            Tu hogar está en calma. FamIA ha registrado momentos especiales esta semana y sugiere crear un recuerdo juntos hoy.
-          </p>
-          <div class="story-cards-row" id="hero-story-nodes"></div>
-        </div>
-
-        <div class="famia-coach-card" style="margin-bottom:28px;">
-          <div class="famia-avatar-spark"><i class="fa-solid fa-sparkles"></i></div>
-          <div style="flex:1;">
-            <h4 style="font-family:var(--font-display); font-size:var(--text-base); font-weight:700; color:var(--navy); margin-bottom:4px;">Sugerencia Proactiva de FamIA</h4>
-            <p style="font-size:var(--text-sm); color:var(--text-muted);" id="proactive-text">
-              "Hace 3 semanas no cenan juntos. ¿Te gustaría planear una cena especial este fin de semana?"
-            </p>
-          </div>
-          <button class="btn-primary" onclick="navigateTo('chat')">Planear con FamIA</button>
-        </div>
-
-        <div class="grid-3">
-          <div class="card-glass">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-              <h4 style="font-family:var(--font-display); font-size:var(--text-sm); font-weight:700; color:var(--navy);"><i class="fa-solid fa-heart-pulse" style="color:var(--rose);"></i> Clima Emocional</h4>
-              <span class="badge-tag badge-rose">Hoy</span>
-            </div>
-            <p style="font-size:var(--text-xs); color:var(--text-muted); margin-bottom:12px;">Último registro del hogar:</p>
-            <div style="font-family:var(--font-display); font-size:var(--text-2xl); font-weight:800; color:var(--navy);" id="home-mood-display">😌 Tranquilo</div>
-          </div>
-
-          <div class="card-glass">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-              <h4 style="font-family:var(--font-display); font-size:var(--text-sm); font-weight:700; color:var(--navy);"><i class="fa-solid fa-vault" style="color:var(--amber);"></i> Cápsula del Legado</h4>
-              <span class="badge-tag badge-amber">Disponible</span>
-            </div>
-            <p style="font-size:var(--text-xs); color:var(--text-muted); font-style:italic;" id="home-legacy-quote">
-              "Los mejores recuerdos no son los que se planean, sino los que se guardan."
-            </p>
-          </div>
-
-          <div class="card-glass">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-              <h4 style="font-family:var(--font-display); font-size:var(--text-sm); font-weight:700; color:var(--navy);"><i class="fa-solid fa-trophy" style="color:var(--primary);"></i> Nivel Familiar</h4>
-              <span class="badge-tag badge-primary" id="home-level-tag">Nivel 3</span>
-            </div>
-            <h5 style="font-family:var(--font-display); font-size:var(--text-base); font-weight:700; color:var(--navy); margin-bottom:8px;" id="home-level-title">Familia Conectada</h5>
-            <div style="background:var(--border); height:6px; border-radius:var(--radius-full); overflow:hidden;">
-              <div style="width:65%; height:100%; background:linear-gradient(90deg, var(--primary), var(--rose));"></div>
-            </div>
-          </div>
+      <section id="view-home" class="view-page">
+        <div class="card-glass" style="margin-bottom:20px;">
+          <h3 style="font-family:var(--font-display); font-size:var(--text-xl); font-weight:800; color:var(--navy); margin-bottom:4px;">Inicio del Hogar</h3>
+          <p style="font-size:var(--text-sm); color:var(--text-muted);">Historia viva y estado emocional familiar.</p>
         </div>
       </section>
 
       <!-- BRAIN VIEW -->
       <section id="view-brain" class="view-page">
-        <div class="card-glass" style="margin-bottom:24px;">
+        <div class="card-glass" style="margin-bottom:20px;">
           <h3 style="font-family:var(--font-display); font-size:var(--text-xl); font-weight:800; color:var(--navy); margin-bottom:4px;">Family Brain 3.0 — Biografías Inteligentes</h3>
-          <p style="font-size:var(--text-sm); color:var(--text-muted);">Cada integrante tiene una biografía viva con sus historias, gustos y sueños.</p>
         </div>
-        <div class="grid-2" id="brain-members-grid"></div>
       </section>
 
       <!-- CHAT VIEW -->
@@ -981,252 +551,246 @@ h5 { font-size: var(--text-base); font-weight: 600; }
         <div class="chat-container">
           <div class="chat-messages-area">
             <div class="chat-history" id="chat-history-box">
-              <div class="chat-bubble ai">
-                <strong>FamIA:</strong> ¡Hola! Soy la inteligencia biográfica de tu familia. Cuéntame sobre un recuerdo especial, o pregúntame por ideas de regalos y cenas. ✨
-              </div>
-            </div>
-            <div class="chat-input-bar">
-              <input type="text" id="chat-input-field" placeholder="Escribe un mensaje o pregunta a FamIA..." onkeypress="if(event.key==='Enter')sendChatMessage()">
-              <button class="btn-primary" onclick="sendChatMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+              <div class="chat-bubble ai"><strong>FamIA:</strong> ¡Hola! Puedo ayudarte a escribir reflexiones emocionales para tus Polaroids. ✨</div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- VISUAL TIMELINE VIEW -->
+      <!-- TIMELINE VIEW -->
       <section id="view-timeline" class="view-page">
-        <div class="card-glass" style="margin-bottom:28px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
-          <div>
-            <h3 style="font-family:var(--font-display); font-size:var(--text-xl); font-weight:800; color:var(--navy);">Línea del Tiempo Familiar</h3>
-            <p style="font-size:var(--text-sm); color:var(--text-muted);">La historia fotográfica y narrativa de tus momentos inolvidables.</p>
-          </div>
-          <button class="btn-primary" onclick="addTimelineEvent()"><i class="fa-solid fa-camera-retro"></i> Agregar Momento</button>
+        <div class="card-glass" style="margin-bottom:20px;">
+          <h3 style="font-family:var(--font-display); font-size:var(--text-xl); font-weight:800; color:var(--navy); margin-bottom:4px;">Línea del Tiempo Familiar</h3>
         </div>
-        <div class="timeline-vertical-spine" id="timeline-spine-container"></div>
       </section>
 
       <!-- LEGACY VIEW -->
       <section id="view-legacy" class="view-page">
-        <div class="card-glass" style="margin-bottom:24px; display:flex; justify-content:space-between; align-items:center;">
-          <div>
-            <h3 style="font-family:var(--font-display); font-size:var(--text-xl); font-weight:800; color:var(--navy);">Baúl del Legado</h3>
-            <p style="font-size:var(--text-sm); color:var(--text-muted);">Mensajes y cápsulas del tiempo para el futuro.</p>
-          </div>
-          <button class="btn-primary" onclick="addLegacyCapsule()"><i class="fa-solid fa-plus"></i> Crear Cápsula</button>
+        <div class="card-glass" style="margin-bottom:20px;">
+          <h3 style="font-family:var(--font-display); font-size:var(--text-xl); font-weight:800; color:var(--navy); margin-bottom:4px;">Baúl del Legado</h3>
         </div>
-        <div class="grid-2" id="legacy-capsules-grid"></div>
       </section>
 
       <!-- GOALS VIEW -->
       <section id="view-goals" class="view-page">
-        <div class="card-glass" style="margin-bottom:24px;">
-          <h3 style="font-family:var(--font-display); font-size:var(--text-xl); font-weight:800; color:var(--navy); margin-bottom:4px;">Aventura Familiar</h3>
-          <p style="font-size:var(--text-sm); color:var(--text-muted);">Misiones y logros para fortalecer los lazos de casa.</p>
-        </div>
-        <div class="grid-2" id="goals-missions-grid"></div>
-      </section>
-
-      <!-- RADAR VIEW -->
-      <section id="view-radar" class="view-page">
-        <div class="card-glass" style="max-width:560px; margin:0 auto; text-align:center;">
-          <h3 style="font-family:var(--font-display); font-size:var(--text-xl); font-weight:800; color:var(--navy); margin-bottom:6px;">Check-in Emocional</h3>
-          <p style="font-size:var(--text-sm); color:var(--text-muted); margin-bottom:24px;">¿Cómo te sientes en este momento?</p>
-          <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-bottom:24px;">
-            <button class="btn-secondary" onclick="registerMood('Alegre','😊')">😊 Alegre</button>
-            <button class="btn-secondary" onclick="registerMood('Tranquilo','😌')">😌 Tranquilo</button>
-            <button class="btn-secondary" onclick="registerMood('Emocionado','🤩')">🤩 Emocionado</button>
-            <button class="btn-secondary" onclick="registerMood('Cansado','😮‍💨')">😮‍💨 Cansado</button>
-            <button class="btn-secondary" onclick="registerMood('Nostálgico','🥹')">🥹 Nostálgico</button>
-          </div>
+        <div class="card-glass" style="margin-bottom:20px;">
+          <h3 style="font-family:var(--font-display); font-size:var(--text-xl); font-weight:800; color:var(--navy); margin-bottom:4px;">Misiones Familiares</h3>
         </div>
       </section>
 
       <!-- SETTINGS VIEW -->
       <section id="view-settings" class="view-page">
-        <div class="card-glass" style="max-width:560px; margin:0 auto;">
-          <h3 style="font-family:var(--font-display); font-size:var(--text-xl); font-weight:800; color:var(--navy); margin-bottom:18px;">Ajustes & Privacidad del Hogar</h3>
-          <div style="display:flex; justify-content:space-between; align-items:center; padding:14px 0; border-bottom:1px solid var(--border);">
-            <div>
-              <h4 style="font-family:var(--font-display); font-size:var(--text-sm); font-weight:700; color:var(--navy);">Tema Oscuro</h4>
-              <p style="font-size:var(--text-xs); color:var(--text-muted);">Cambia entre tema claro y oscuro</p>
-            </div>
-            <button class="btn-secondary" onclick="toggleTheme()">Cambiar</button>
-          </div>
-          <div style="display:flex; justify-content:space-between; align-items:center; padding:14px 0; border-bottom:1px solid var(--border);">
-            <div>
-              <h4 style="font-family:var(--font-display); font-size:var(--text-sm); font-weight:700; color:var(--navy);">Exportar Historia del Hogar</h4>
-              <p style="font-size:var(--text-xs); color:var(--text-muted);">Descarga tus recuerdos en formato JSON</p>
-            </div>
-            <button class="btn-secondary" onclick="exportData()">Exportar</button>
-          </div>
+        <div class="card-glass" style="margin-bottom:20px;">
+          <h3 style="font-family:var(--font-display); font-size:var(--text-xl); font-weight:800; color:var(--navy); margin-bottom:4px;">Ajustes de Memories by TyanGO</h3>
         </div>
       </section>
     </div>
   </main>
 </div>
 
+<!-- MODAL CREAR POLAROID DIGITAL -->
+<div class="modal-overlay" id="create-polaroid-modal">
+  <div class="modal-box">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+      <h3 style="font-family:var(--font-display); font-size:var(--text-xl); font-weight:800; color:var(--navy);"><i class="fa-solid fa-camera-polaroid" style="color:var(--primary);"></i> Crear Polaroid Digital</h3>
+      <button class="btn-secondary" style="padding:6px 12px; border:none;" onclick="closeCreatePolaroidModal()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <!-- SELECCIÓN DE ESTILO -->
+    <div style="margin-bottom:18px;">
+      <label style="display:block; font-size:var(--text-xs); font-weight:800; color:var(--primary); text-transform:uppercase; margin-bottom:8px;">Estilo de Presentación</label>
+      <select id="polaroid-style-input" style="width:100%; padding:12px; border:1px solid var(--border-strong); border-radius:var(--radius-md); font-size:var(--text-sm); background:var(--bg-main); color:var(--text);">
+        <option value="classic">📸 Classic Polaroid (Marco blanco clásico)</option>
+        <option value="vintage">🎞️ Vintage Film (Rollo analógico retro)</option>
+        <option value="memory">🖼️ Memory Frame (Marco de oro de museo)</option>
+        <option value="scrapbook">✂️ Scrapbook (Álbum con cinta washi)</option>
+        <option value="legacy">📜 Legacy (Tarjeta elegante de gran valor)</option>
+      </select>
+    </div>
+
+    <!-- SUBIDA DE FOTO -->
+    <div style="border:2px dashed var(--border-strong); border-radius:var(--radius-md); padding:20px; text-align:center; background:var(--bg-main); cursor:pointer; margin-bottom:16px;" onclick="document.getElementById('pol-file').click()">
+      <i class="fa-solid fa-images" style="font-size:28px; color:var(--primary); margin-bottom:6px;"></i>
+      <div style="font-size:var(--text-xs); font-weight:700; color:var(--navy);">Seleccionar foto de la galería</div>
+      <input type="file" id="pol-file" accept="image/*" style="display:none;" onchange="previewPolaroidPhoto(event)">
+    </div>
+
+    <img id="pol-preview-img" src="" alt="Vista previa" style="width:100%; max-height:180px; object-fit:cover; border-radius:var(--radius-md); display:none; margin-bottom:14px;">
+
+    <div style="margin-bottom:14px;">
+      <label style="display:block; font-size:var(--text-xs); font-weight:800; color:var(--primary); text-transform:uppercase; margin-bottom:4px;">Título del Recuerdo (IA)</label>
+      <input type="text" id="pol-title" placeholder="Ej: Atardecer Inolvidable en Cancún" style="width:100%; padding:12px; border:1px solid var(--border-strong); border-radius:var(--radius-md); font-size:var(--text-sm); background:var(--bg-main); color:var(--text);">
+    </div>
+
+    <div style="display:flex; gap:10px; margin-bottom:14px;">
+      <input type="text" id="pol-location" placeholder="Lugar (ej: Cancún)" style="flex:1; padding:12px; border:1px solid var(--border-strong); border-radius:var(--radius-md); font-size:var(--text-sm); background:var(--bg-main); color:var(--text);">
+      <input type="text" id="pol-members" placeholder="Personas (ej: Elena & Mateo)" style="flex:1; padding:12px; border:1px solid var(--border-strong); border-radius:var(--radius-md); font-size:var(--text-sm); background:var(--bg-main); color:var(--text);">
+    </div>
+
+    <div style="margin-bottom:18px;">
+      <label style="display:block; font-size:var(--text-xs); font-weight:800; color:var(--primary); text-transform:uppercase; margin-bottom:4px;">Reflexión Emocional de Family Brain</label>
+      <textarea id="pol-quote" rows="2" placeholder="Ej: Los mejores recuerdos son los que se guardan en el corazón." style="width:100%; padding:12px; border:1px solid var(--border-strong); border-radius:var(--radius-md); font-size:var(--text-sm); background:var(--bg-main); color:var(--text);"></textarea>
+    </div>
+
+    <div style="display:flex; gap:12px;">
+      <button class="btn-secondary" style="flex:1;" onclick="closeCreatePolaroidModal()">Cancelar</button>
+      <button class="btn-primary" style="flex:1;" onclick="saveGeneratedPolaroid()">Generar Polaroid <i class="fa-solid fa-sparkles"></i></button>
+    </div>
+  </div>
+</div>
+
 <script>
-// STATE ARCHITECTURE (MULTIPLE HOMES SUPPORT)
-let ApplicationState = {
-  activeHomeId: 'home_1',
-  homes: [
+// MEMORIES BY TYANGO STATE
+let MemoriesState = {
+  polaroids: [
     {
-      id: 'home_1',
-      code: 'HOME-X7Q2A9',
-      familyName: 'Familia Ramírez',
-      members: [
-        { name: 'Elena', role: 'Madre', avatar: 'E', traits: { amor: 'Tiempo de Calidad', sueno: 'Conocer los Alpes', frase: 'Todo se arregla con té' } },
-        { name: 'Carlos', role: 'Padre', avatar: 'C', traits: { amor: 'Actos de Servicio', sueno: 'Escribir un libro', frase: 'La paciencia construye hogares' } },
-        { name: 'Sofía', role: 'Hija', avatar: 'S', traits: { amor: 'Palabras de Afirmación', sueno: 'Tener su propia banda', frase: 'La música conecta almas' } }
-      ],
-      timeline: [
-        { id: 1, title: 'Vacaciones en la Playa', desc: 'Mateo aprendió a nadar y Sofía tomó fotos maravillosas del atardecer.', date: '15 Enero, 2026', category: '✈️ Viaje', photo: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80' }
-      ],
-      legacy: [{ title: 'Receta de la Salsa Secreta', content: 'Cocinar con amor y fuego lento...', author: 'Abuela Rosa' }],
-      moods: [{ text: 'Tranquilo', emoji: '😌' }]
+      id: 101,
+      style: 'classic',
+      title: 'Atardecer Inolvidable',
+      location: 'Playa de Cancún',
+      members: 'Mateo, Sofía & Elena',
+      date: '15 de Enero, 2026',
+      quote: '"Los mejores días son los que compartimos en familia sin prisa."',
+      originalPhoto: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80'
+    },
+    {
+      id: 102,
+      style: 'vintage',
+      title: 'Tarde de Juegos en el Parque',
+      location: 'Parque Central',
+      members: 'Mateo & Luna 🐾',
+      date: '10 de Septiembre, 2024',
+      quote: '"Verlos sonreír es el regalo más valioso de la vida."',
+      originalPhoto: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1200&q=80'
+    },
+    {
+      id: 103,
+      style: 'memory',
+      title: 'Cena de Aniversario en Casa',
+      location: 'Hogar Mendoza',
+      members: 'Toda la Familia',
+      date: '24 de Diciembre, 2025',
+      quote: '"Cocinar juntos transforma una receta en una tradición."',
+      originalPhoto: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1200&q=80'
+    },
+    {
+      id: 104,
+      style: 'scrapbook',
+      title: 'Mudanza a Nuestra Casa Nueva',
+      location: 'El Limonero del Jardín',
+      members: 'Elena, Carlos, Sofía',
+      date: '20 de Mayo, 2021',
+      quote: '"Un nuevo comienzo construido con las manos de todos."',
+      originalPhoto: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80'
     }
-  ],
-  tempCreation: {
-    homeName: '',
-    userName: '',
-    userRole: 'Madre',
-    members: [],
-    tradition: '',
-    value: ''
-  }
+  ]
 };
 
-function saveState() {
-  try { localStorage.setItem('tyango_app_state_v4', JSON.stringify(ApplicationState)); } catch(e){}
+let uploadedPhotoDataUrl = '';
+
+function saveMemoriesState() {
+  try { localStorage.setItem('tyango_memories_state_v1', JSON.stringify(MemoriesState)); } catch(e){}
 }
 
-function loadState() {
+function loadMemoriesState() {
   try {
-    const data = localStorage.getItem('tyango_app_state_v4');
-    if (data) ApplicationState = JSON.parse(data);
+    const data = localStorage.getItem('tyango_memories_state_v1');
+    if (data) MemoriesState = JSON.parse(data);
   } catch(e){}
 }
 
-function getActiveHome() {
-  return ApplicationState.homes.find(h => h.id === ApplicationState.activeHomeId) || ApplicationState.homes[0];
+function openCreatePolaroidModal() {
+  uploadedPhotoDataUrl = '';
+  document.getElementById('pol-title').value = '';
+  document.getElementById('pol-location').value = '';
+  document.getElementById('pol-members').value = '';
+  document.getElementById('pol-quote').value = '';
+  document.getElementById('pol-preview-img').style.display = 'none';
+  document.getElementById('create-polaroid-modal').classList.add('active');
 }
 
-// ONBOARDING NAVIGATION
-function goOnboardingStep(step) {
-  document.querySelectorAll('.onboarding-step-content').forEach(el => el.classList.remove('active'));
-  const target = document.getElementById(`onb-step-${step}`);
-  if (target) target.classList.add('active');
+function closeCreatePolaroidModal() {
+  document.getElementById('create-polaroid-modal').classList.remove('active');
 }
 
-function submitStep1() {
-  const name = document.getElementById('onb-home-name-input').value.trim();
-  if (!name) { alert('Por favor ingresa el nombre de tu hogar'); return; }
-  ApplicationState.tempCreation.homeName = name;
-  goOnboardingStep(2);
-}
-
-function submitStep2() {
-  const userName = document.getElementById('onb-user-name-input').value.trim();
-  const userRole = document.getElementById('onb-user-role-input').value;
-  if (!userName) { alert('Por favor dinos tu nombre'); return; }
-  ApplicationState.tempCreation.userName = userName;
-  ApplicationState.tempCreation.userRole = userRole;
-  goOnboardingStep(3);
-}
-
-function addMemberToOnboarding() {
-  const mName = document.getElementById('onb-member-name').value.trim();
-  const mRole = document.getElementById('onb-member-role').value;
-  if (!mName) return;
-
-  ApplicationState.tempCreation.members.push({ name: mName, role: mRole });
-  document.getElementById('onb-member-name').value = '';
-
-  const list = document.getElementById('onb-members-list');
-  list.innerHTML = ApplicationState.tempCreation.members.map(m => `
-    <span class="badge-tag badge-primary" style="margin:3px;">${m.name} (${m.role})</span>
-  `).join('');
-}
-
-function submitStep4() {
-  ApplicationState.tempCreation.tradition = document.getElementById('onb-tradition-input').value.trim();
-  ApplicationState.tempCreation.value = document.getElementById('onb-value-input').value.trim();
-
-  // Create new Home object
-  const newHomeId = 'home_' + Date.now();
-  const newHomeCode = 'HOME-' + Math.random().toString(36).substring(2, 8).toUpperCase();
-  
-  const creatorMember = {
-    name: ApplicationState.tempCreation.userName,
-    role: ApplicationState.tempCreation.userRole,
-    avatar: ApplicationState.tempCreation.userName[0].toUpperCase(),
-    traits: { amor: 'Tiempo de Calidad', sueno: 'Por descubrir', frase: ApplicationState.tempCreation.value || 'Amor y unión' }
+function previewPolaroidPhoto(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    uploadedPhotoDataUrl = e.target.result;
+    const img = document.getElementById('pol-preview-img');
+    img.src = uploadedPhotoDataUrl;
+    img.style.display = 'block';
   };
-
-  const formattedMembers = [creatorMember, ...ApplicationState.tempCreation.members.map(m => ({
-    name: m.name, role: m.role, avatar: m.name[0].toUpperCase(), traits: { amor: 'Por descubrir', sueno: 'Por descubrir', frase: 'Familia unida' }
-  }))];
-
-  const newHome = {
-    id: newHomeId,
-    code: newHomeCode,
-    familyName: ApplicationState.tempCreation.homeName,
-    members: formattedMembers,
-    timeline: [
-      { id: Date.now(), title: 'Creación de nuestro Hogar', desc: `Iniciamos la historia de ${ApplicationState.tempCreation.homeName}.`, date: 'Hoy', category: '🏠 Nuevo Hogar', photo: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80' }
-    ],
-    legacy: [],
-    moods: [{ text: 'Alegre', emoji: '😊' }]
-  };
-
-  ApplicationState.homes.push(newHome);
-  ApplicationState.activeHomeId = newHomeId;
-  saveState();
-
-  document.getElementById('created-home-title').textContent = `¡${newHome.familyName} está listo!`;
-  document.getElementById('home-created-code').textContent = newHomeCode;
-  goOnboardingStep(5);
+  reader.readAsDataURL(file);
 }
 
-function copyHomeCode() {
-  const code = document.getElementById('home-created-code').textContent;
-  navigator.clipboard.writeText(code);
-  alert('¡Código de acceso copiado!');
+function saveGeneratedPolaroid() {
+  const style = document.getElementById('polaroid-style-input').value;
+  const title = document.getElementById('pol-title').value.trim() || 'Recuerdo Especial';
+  const location = document.getElementById('pol-location').value.trim() || 'Hogar';
+  const members = document.getElementById('pol-members').value.trim() || 'Familia';
+  const quote = document.getElementById('pol-quote').value.trim() || '"Un momento inolvidable."';
+
+  const photo = uploadedPhotoDataUrl || 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1200&q=80';
+
+  MemoriesState.polaroids.unshift({
+    id: Date.now(),
+    style,
+    title,
+    location,
+    members,
+    date: new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }),
+    quote: `"${quote.replace(/"/g, '')}"`,
+    originalPhoto: photo
+  });
+
+  saveMemoriesState();
+  renderPolaroids();
+  closeCreatePolaroidModal();
 }
 
-function finishOnboardingWithAuth(provider) {
-  alert(`Iniciando sesión segura con ${provider}...`);
-  goOnboardingStep('final');
+function convertPhotoToPolaroid(idx) {
+  alert('✨ FamIA ha generado una Polaroid Classic para este recuerdo.');
+  navigateTo('memories');
 }
 
-function submitJoinHome() {
-  const code = document.getElementById('onb-join-code-input').value.trim();
-  if (!code) { alert('Ingresa la clave de tu hogar'); return; }
-  alert(`Te has unido exitosamente al hogar con clave ${code}`);
-  loadDemoHome();
+function filterPolaroidStyle(style) {
+  renderPolaroids(style);
 }
 
-function enterMainApp() {
-  document.getElementById('onboarding-overlay').classList.add('hidden');
-  document.getElementById('app-root').style.display = 'flex';
-  renderUI();
-}
+function renderPolaroids(filterStyle = 'all') {
+  const container = document.getElementById('polaroids-container');
+  if (!container) return;
 
-function loadDemoHome() {
-  enterMainApp();
-}
-
-function switchHomeWorkspace() {
-  const home = getActiveHome();
-  const nextName = prompt('Cambiar de hogar o crear uno nuevo:', home.familyName);
-  if (nextName && nextName !== home.familyName) {
-    home.familyName = nextName;
-    saveState();
-    renderUI();
+  let items = MemoriesState.polaroids;
+  if (filterStyle !== 'all') {
+    items = items.filter(p => p.style === filterStyle);
   }
+
+  container.innerHTML = items.map(p => {
+    let frameClass = 'polaroid-frame-classic';
+    if (p.style === 'vintage') frameClass = 'polaroid-frame-vintage';
+    if (p.style === 'memory') frameClass = 'polaroid-frame-memory';
+    if (p.style === 'scrapbook') frameClass = 'polaroid-frame-scrapbook';
+    if (p.style === 'legacy') frameClass = 'polaroid-frame-legacy';
+
+    return `
+      <div class="${frameClass}">
+        <div class="polaroid-photo-box">
+          <img src="${p.originalPhoto}" alt="${p.title}">
+        </div>
+        <div class="polaroid-caption-area">
+          <h4 class="polaroid-handwriting-title">${p.title}</h4>
+          <div class="polaroid-meta-text">📍 ${p.location} • 👥 ${p.members} • 📅 ${p.date}</div>
+          <p class="polaroid-reflection-quote">${p.quote}</p>
+        </div>
+      </div>
+    `;
+  }).join('');
 }
 
-// MAIN UI FUNCTIONS
 function navigateTo(target) {
   document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
   const link = document.querySelector(`.nav-link[data-target="${target}"]`);
@@ -1235,142 +799,18 @@ function navigateTo(target) {
   document.querySelectorAll('.view-page').forEach(el => el.classList.remove('active'));
   const page = document.getElementById(`view-${target}`);
   if (page) page.classList.add('active');
+
+  if (target === 'memories') renderPolaroids();
 }
 
 function toggleTheme() {
-  ApplicationState.darkMode = !ApplicationState.darkMode;
-  applyTheme();
-  saveState();
-}
-
-function applyTheme() {
-  document.documentElement.setAttribute('data-theme', ApplicationState.darkMode ? 'dark' : 'light');
-}
-
-function sendChatMessage() {
-  const input = document.getElementById('chat-input-field');
-  const box = document.getElementById('chat-history-box');
-  if (!input || !box) return;
-  const text = input.value.trim();
-  if (!text) return;
-
-  const home = getActiveHome();
-  const userMsg = document.createElement('div');
-  userMsg.className = 'chat-bubble user';
-  userMsg.innerHTML = `<strong>Tú:</strong> ${text}`;
-  box.appendChild(userMsg);
-  input.value = '';
-  box.scrollTop = box.scrollHeight;
-
-  setTimeout(() => {
-    const aiMsg = document.createElement('div');
-    aiMsg.className = 'chat-bubble ai';
-    aiMsg.innerHTML = `<strong>FamIA:</strong> He guardado "<em>${text}</em>" en los recuerdos de ${home.familyName}. ✨`;
-    box.appendChild(aiMsg);
-    box.scrollTop = box.scrollHeight;
-  }, 600);
-}
-
-function registerMood(text, emoji) {
-  const home = getActiveHome();
-  home.moods.push({ text, emoji });
-  saveState();
-  document.getElementById('home-mood-display').textContent = `${emoji} ${text}`;
-  alert(`Estado registrado: ${emoji} ${text}`);
-}
-
-function renderUI() {
-  const home = getActiveHome();
-  document.getElementById('sidebar-family-name').textContent = home.familyName;
-  document.getElementById('current-workspace-name').textContent = home.familyName;
-
-  const avBox = document.getElementById('sidebar-avatars');
-  if (avBox) {
-    avBox.innerHTML = home.members.map(m => `<div class="avatar-pill">${m.avatar}</div>`).join('');
-  }
-
-  // Render Member Bios
-  const membersGrid = document.getElementById('brain-members-grid');
-  if (membersGrid) {
-    membersGrid.innerHTML = home.members.map(m => `
-      <div class="member-bio-card">
-        <div class="member-card-header">
-          <div class="member-card-avatar">${m.avatar}</div>
-          <div class="member-card-meta">
-            <h3>${m.name}</h3>
-            <span>${m.role}</span>
-          </div>
-        </div>
-        <div class="bio-attribute-row">
-          <div class="bio-attr-item"><strong>Lenguaje del Amor:</strong> ${m.traits.amor}</div>
-          <div class="bio-attr-item"><strong>Sueño:</strong> ${m.traits.sueno}</div>
-          <div class="bio-attr-item"><strong>Frase:</strong> "${m.traits.frase}"</div>
-        </div>
-      </div>
-    `).join('');
-  }
-
-  // Render Timeline
-  const spineContainer = document.getElementById('timeline-spine-container');
-  if (spineContainer) {
-    spineContainer.innerHTML = home.timeline.map((item, idx) => `
-      <div class="timeline-card-node ${idx % 2 === 0 ? 'left-side' : 'right-side'}">
-        <div class="timeline-node-dot"></div>
-        <div class="timeline-card-content">
-          ${item.photo ? `<div class="timeline-photo-wrapper"><img src="${item.photo}" alt="${item.title}"></div>` : ''}
-          <div class="timeline-body-padding">
-            <div class="timeline-meta-row">
-              <span class="timeline-date-chip">${item.date}</span>
-              <span class="badge-tag badge-rose">${item.category}</span>
-            </div>
-            <h4 class="timeline-title">${item.title}</h4>
-            <p class="timeline-description">${item.desc}</p>
-          </div>
-        </div>
-      </div>
-    `).join('');
-  }
-}
-
-function exportData() {
-  const blob = new Blob([JSON.stringify(ApplicationState, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'tyango-home-backup.json';
-  a.click();
-}
-
-function addTimelineEvent() {
-  const title = prompt('Título del momento:');
-  if (!title) return;
-  const desc = prompt('Descripción del recuerdo:') || '';
-  const home = getActiveHome();
-  home.timeline.unshift({
-    id: Date.now(),
-    title,
-    desc,
-    date: 'Hoy',
-    category: '📸 Recuerdo',
-    photo: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1200&q=80'
-  });
-  saveState();
-  renderUI();
-}
-
-function addLegacyCapsule() {
-  const title = prompt('Título de la cápsula:');
-  if (!title) return;
-  const content = prompt('Mensaje del legado:');
-  const home = getActiveHome();
-  home.legacy.unshift({ title, content: content || '', author: home.members[0].name });
-  saveState();
-  renderUI();
+  const current = document.documentElement.getAttribute('data-theme');
+  document.documentElement.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  loadState();
-  applyTheme();
+  loadMemoriesState();
+  renderPolaroids();
 });
 </script>
 </body>
